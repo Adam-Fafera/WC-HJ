@@ -16,6 +16,7 @@ namespace TopDown.Movement
     {
        private void OnMove(InputValue value)
         {
+         
             Vector3 playerInput = new Vector3(value.Get<Vector2>().x, value.Get<Vector2>().y, 0);
             curentInput = playerInput;
         }

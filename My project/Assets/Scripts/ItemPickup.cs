@@ -24,6 +24,7 @@ public class ItemPickup : MonoBehaviour
             if (pickable == true)
             {
                 ItemManagement.Instance.SetCurrentWeapon(itemId);
+                ShootingManager.Instance.Start();
             }        
         }
     }

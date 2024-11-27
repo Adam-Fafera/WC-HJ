@@ -26,14 +26,23 @@ public class ItemManagement : MonoBehaviour
     public void SetCurrentWeapon(int itemId)
     {
         currentWeapon = weapons[itemId];
-        weapon.GetComponent<SpriteRenderer>().sprite = currentWeapon.texture;
+        weapon.GetComponent<SpriteRenderer>().sprite = currentWeapon.image;
+    }
+
+    public void UpdateAmmo(int value)
+    {
+        currentWeapon.ammo += value;
+        if (currentWeapon.ammo <= 0)
+        {
+            SetCurrentWeapon(0);
+        }
     }
 }
 [Serializable]
 public struct Weapon
 {
     public string name;
-    public Sprite texture;
+    public Sprite image;
     public int dmg;
     public int ammo;
 }

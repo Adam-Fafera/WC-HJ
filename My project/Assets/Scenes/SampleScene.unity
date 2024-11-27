@@ -263,6 +263,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 350
+  acceleration: 30
+  deaceleration: 12
 --- !u!50 &591723727
 Rigidbody2D:
   serializedVersion: 4

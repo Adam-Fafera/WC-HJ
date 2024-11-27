@@ -11,19 +11,45 @@ namespace TopDown.Movement
     public class Movement : MonoBehaviour
     {
         [SerializeField] private float movementSpeed;
-        //[SerializeField] private float acceleration;
-        private Rigidbody2D body;
+        [SerializeField] private float acceleration;
+        [SerializeField] private float deaceleration;
 
-        protected Vector3 curentInput;
+        private Rigidbody2D body;
+        private Vector2 currentSpeed;
+        protected Vector2 curentInput;
 
 
         private void Awake()
         {
             body = GetComponent<Rigidbody2D>();
+            currentSpeed = Vector3.zero;
         }
         private void FixedUpdate()
         {
-            body.velocity = movementSpeed * curentInput * Time.fixedDeltaTime;
+            if (curentInput == Vector2.zero)
+            {
+                if (body.velocity.sqrMagnitude > 0.01f)
+                {
+                    //finds the mid point between current speed and a full stop. Then slowly decelerates 
+                    body.velocity = Vector2.Lerp(body.velocity, Vector2.zero, deaceleration * Time.fixedDeltaTime);
+                }
+                else
+                {
+                    body.velocity = Vector2.zero;  //if close to zero, stops
+                }
+            }
+            else
+            {
+                if (curentInput != body.velocity.normalized)
+                {
+                    body.velocity = Vector2.Lerp(body.velocity, movementSpeed * curentInput * Time.fixedDeltaTime, acceleration/1.5f * Time.fixedDeltaTime);
+                }
+                else
+                {
+
+                    body.velocity = Vector2.Lerp(body.velocity, movementSpeed * curentInput * Time.fixedDeltaTime, acceleration * Time.fixedDeltaTime);
+                }
+            }
         }
     }
 

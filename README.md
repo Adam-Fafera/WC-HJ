@@ -1,5 +1,8 @@
 # White Collar Hit Job
-![Alt text](https://i.imgur.com/9SvqDTa.gif "a title")
+<p align="center">
+  <img src="https://i.imgur.com/9SvqDTa.gif" alt="White Collar Hit Job Custom Logo"/>
+</p>
+
 
 ## Game Description
 

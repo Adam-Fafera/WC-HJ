@@ -12,3 +12,8 @@
 
 You find yourself in a retro dystopia of 1970s-80s America in THE City, a city so gigantic it has no name, skyscrapers obscuring the sky and corporations to match countries. The overwhelming darkness and density of the air is occasionally interrupted by neon advertisements promising unattainable happiness. On the streets you can see people in wide suits, strolling between crowded alleys, always busy and always tired.
 
+
+
+
+
+<sub>Devs: Jakub Cielica, Adam Fąfera, Rafał Cyran, Marcin Fijoł</sub>

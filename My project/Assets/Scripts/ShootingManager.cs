@@ -31,7 +31,7 @@ public class ShootingManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            ItemManagement.Instance.UpdateAmmo(-2);
+            ItemManagement.Instance.UpdateAmmo(-1);
             ammoText.text = "Ammo: " + ItemManagement.Instance.currentWeapon.ammo;
         }
     }

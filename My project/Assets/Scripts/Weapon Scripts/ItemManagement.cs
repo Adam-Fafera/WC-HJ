@@ -2,21 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-
+using TMPro;
 public class ItemManagement : MonoBehaviour
 {
-    public GameObject weapon;
+    public SpriteRenderer weapon; //czyta gdzie jest teksturka broni
     public Weapon currentWeapon;
     public Weapon[] weapons;
 
-    public static ItemManagement Instance;
+    [SerializeField] TMP_Text ammoText; //zwykly tekst
 
+    // to i awake odpowiada za to zeby szlo sie z innego skryptu do tego odnosic
+    public static ItemManagement Instance;
+    private void LoadValues()
+    {
+        ammoText.text = "Ammo: " + currentWeapon.ammo;
+        weapon.sprite = currentWeapon.image;
+    }
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+
+            LoadValues();
         }
         else
         {
@@ -26,16 +35,18 @@ public class ItemManagement : MonoBehaviour
     public void SetCurrentWeapon(int itemId)
     {
         currentWeapon = weapons[itemId];
-        weapon.GetComponent<SpriteRenderer>().sprite = currentWeapon.image;
+        weapon.sprite = currentWeapon.image;
+        ammoText.text = "Ammo: " + currentWeapon.ammo;
     }
 
     public void UpdateAmmo(int value)
     {
         currentWeapon.ammo += value;
-        if (currentWeapon.ammo <= 0)
+        if (currentWeapon.ammo <= 0) //domyslnie po skonczeniu sie ammo zmienia sie na lape => weapons[0];
         {
             SetCurrentWeapon(0);
         }
+        ammoText.text = "Ammo: " + currentWeapon.ammo;
     }
 }
 [Serializable]
@@ -43,7 +54,8 @@ public struct Weapon
 {
     public string name;
     public Sprite image;
-    public int dmg;
     public int ammo;
+    public int dmg;
+    public float cooldown;
 }
 

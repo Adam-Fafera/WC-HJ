@@ -6,11 +6,11 @@ using UnityEngine;
 
 public class ItemPickup : MonoBehaviour
 {
-    bool pickable;
-    int itemId;
+    bool pickable; // bool ktory sprawdza czy player siedzi na itemie, bo oncollisionstay i ontrigger stay slabo dziala jak ktos sie akurat nie rusza
+    int itemId; // zczytuje index itemu ktory podnosi po tagu gameobjectu
     private void OnTriggerEnter2D(Collider2D other)
     {
-        itemId = int.Parse(this.gameObject.name);
+        itemId = int.Parse(this.gameObject.tag);
         pickable = true;
     }
     private void OnTriggerExit2D(Collider2D other)
@@ -23,10 +23,9 @@ public class ItemPickup : MonoBehaviour
         {
             if (pickable == true)
             {
-                ItemManagement.Instance.SetCurrentWeapon(itemId);
-                ShootingManager.Instance.Start();
-            }        
+                ItemManagement.Instance.SetCurrentWeapon(itemId); // zmiana itemu (funkcja) w itemManagement
+            }
         }
     }
- 
+
 }

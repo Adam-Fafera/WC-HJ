@@ -14,7 +14,7 @@ public class CameraTarget : MonoBehaviour
         Vector3 targetPosition = (player.position + mousePosition) / 2F;
 
         //constraining the amount of camera movement
-        targetPosition.x = Mathf.Clamp(targetPosition.x, -threshold + player.position.x, threshold + player.position.y);
+        targetPosition.x = Mathf.Clamp(targetPosition.x, player.position.x - threshold, threshold + player.position.x);
         targetPosition.y = Mathf.Clamp(targetPosition.y, -threshold + player.position.y, threshold + player.position.y);
 
         this.transform.position = targetPosition;

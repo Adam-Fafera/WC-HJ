@@ -1,4 +1,5 @@
-# White Collar Hit Job
+White Collar Hit Job
+====================
 <p align="center">
   <img src="https://i.imgur.com/9SvqDTa.gif" alt="White Collar Hit Job Custom Logo"/>
 </p>
@@ -12,7 +13,11 @@
 
 You find yourself in a retro dystopia of 1970s-80s America in THE City, a city so gigantic it has no name, skyscrapers obscuring the sky and corporations to match countries. The overwhelming darkness and density of the air is occasionally interrupted by neon advertisements promising unattainable happiness. On the streets you can see people in wide suits, strolling between crowded alleys, always busy and always tired.
 
-
+## State of the game
+| Version | Changes |
+|:-------:|-------|
+|0.1| Added: <br> - velocity based movement <br> - character rotation <br> - camera movement<br> - item pickup mechanic<br> - shooting mechanic|
+|0.2| ########## |
 
 
 

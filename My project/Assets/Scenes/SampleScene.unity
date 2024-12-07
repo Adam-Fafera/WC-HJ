@@ -441,8 +441,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Ammo: 0'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
-  m_sharedMaterial: {fileID: 2147374, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -696,8 +696,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 350
-  acceleration: 30
-  deaceleration: 12
+  acceleration: 25
+  deaceleration: 10
 --- !u!50 &591723727
 Rigidbody2D:
   serializedVersion: 4
@@ -1183,7 +1183,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.12018525, g: 1, b: 0.07075471, a: 1}
+  m_Color: {r: 0.12018525, g: 1, b: 0.07075471, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

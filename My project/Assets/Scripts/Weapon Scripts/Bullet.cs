@@ -11,7 +11,7 @@ public class Bullet : MonoBehaviour
     {
         rig = this.GetComponent<Rigidbody2D>();
         bulletTransform = this.GetComponent<Transform>();
-        bulletSpeed = 10f;
+        bulletSpeed = 20f;
     }
 
     void FixedUpdate()

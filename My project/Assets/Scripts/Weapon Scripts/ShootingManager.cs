@@ -82,7 +82,7 @@ public class ShootingManager : MonoBehaviour
 
     void MeeleAttack()
     {
-        ItemManagement.Instance.UpdateAmmo(-1);
+        ItemManagement.Instance.UpdateAmmo(-1); //melee weapons should only have their durability go down on hit.
     }
     IEnumerator ShootBurst(int shots, float time) //ienumerator to funkcja ktora dziala w czasie
     {

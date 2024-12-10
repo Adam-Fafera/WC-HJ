@@ -8,6 +8,12 @@ TagManager:
   - 1
   - 2
   - Projectile
+  - Enemy
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
   layers:
   - Default
   - TransparentFX

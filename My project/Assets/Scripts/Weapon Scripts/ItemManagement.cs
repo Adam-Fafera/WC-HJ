@@ -8,6 +8,7 @@ public class ItemManagement : MonoBehaviour
     public SpriteRenderer weapon; //czyta gdzie jest teksturka broni
     public Weapon currentWeapon;
     public Weapon[] weapons;
+    private int currentIndex;
 
     [SerializeField] TMP_Text ammoText; //zwykly tekst
 
@@ -17,6 +18,7 @@ public class ItemManagement : MonoBehaviour
     {
         ammoText.text = "Ammo: " + currentWeapon.ammo;
         weapon.sprite = currentWeapon.image;
+        currentIndex = 1;
     }
     private void Awake()
     {
@@ -34,6 +36,7 @@ public class ItemManagement : MonoBehaviour
     }
     public void SetCurrentWeapon(int itemId)
     {
+        currentIndex = itemId;
         currentWeapon = weapons[itemId];
         weapon.sprite = currentWeapon.image;
         ammoText.text = "Ammo: " + currentWeapon.ammo;
@@ -47,6 +50,11 @@ public class ItemManagement : MonoBehaviour
             SetCurrentWeapon(0);
         }
         ammoText.text = "Ammo: " + currentWeapon.ammo;
+    }
+
+    public int GetCurrentIndex()
+    {
+        return currentIndex;
     }
 }
 [Serializable]

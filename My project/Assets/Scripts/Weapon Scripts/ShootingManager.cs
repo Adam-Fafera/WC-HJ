@@ -10,13 +10,11 @@ public class ShootingManager : MonoBehaviour
     [SerializeField] Transform weaponPos;
     float cooldown;
     private float lastShotTime = 0f; // czas ostatniego bulleta
-
-    void Update()
+    private void OnFire(InputValue value)
     {
        
         
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
+        
             cooldown=ItemManagement.Instance.currentWeapon.cooldown; // dostosowywanie cd do broni
             if (Time.time >= lastShotTime + cooldown) // Sprawdzenie stanu cd
             {
@@ -66,7 +64,7 @@ public class ShootingManager : MonoBehaviour
                     }
 
                 }
-            }
+           
         }
     }
     void ShootSingle()
@@ -103,6 +101,7 @@ public class ShootingManager : MonoBehaviour
             }
         }
         
+
     }
     
    

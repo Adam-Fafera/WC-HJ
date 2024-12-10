@@ -104,14 +104,6 @@ public class ShootingManager : MonoBehaviour
         }
         
     }
-    */
-    private void OnFire(InputValue value)
-    {
-        Debug.Log("shoot");
-        if (ItemManagement.Instance.currentWeapon.ammo > 0)
-        {
-            ItemManagement.Instance.UpdateAmmo(-1);
-            Instantiate(bullet, weaponPos.transform.position, this.transform.rotation);
-        }
-    }
+    
+   
 }

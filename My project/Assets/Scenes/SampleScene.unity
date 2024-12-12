@@ -1324,6 +1324,7 @@ GameObject:
   - component: {fileID: 862724509}
   - component: {fileID: 862724508}
   m_Layer: 0
+  m_Layer: 3
   m_Name: Enemy (1)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -2098,6 +2099,7 @@ GameObject:
   - component: {fileID: 1089151699}
   m_Layer: 0
   m_Name: Weapon
+  m_Name: WeaponSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2326,6 +2328,7 @@ GameObject:
   - component: {fileID: 1164408784}
   - component: {fileID: 1164408783}
   m_Layer: 0
+  m_Layer: 3
   m_Name: Enemy (2)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -2735,10 +2738,14 @@ MonoBehaviour:
       - m_Target: {fileID: 1021368780}
         m_TargetAssemblyTypeName: 
         m_MethodName: 
+      - m_Target: {fileID: 1021368785}
+        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
+        m_MethodName: ExitToMain
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2863,6 +2870,7 @@ GameObject:
   - component: {fileID: 1478558198}
   - component: {fileID: 1478558197}
   m_Layer: 0
+  m_Layer: 3
   m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}

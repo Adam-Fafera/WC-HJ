@@ -12,11 +12,6 @@ public class ShootingManager : MonoBehaviour
     private float lastShotTime = 0f; // czas ostatniego bulleta
     private void OnFire(InputValue value)
     {
-       
-        
-        
-            cooldown=ItemManagement.Instance.currentWeapon.cooldown; // dostosowywanie cd do broni
-            if (Time.time >= lastShotTime + cooldown) // Sprawdzenie stanu cd
 
 
 
@@ -27,10 +22,6 @@ public class ShootingManager : MonoBehaviour
             lastShotTime = Time.time;
             switch (ItemManagement.Instance.GetCurrentIndex()) //switch ktory zbiera index  broni i na podstawie tego wybiera rodzaj strzalu
             {
-                if (ItemManagement.Instance.currentWeapon.ammo > 0)
-                {
-                    lastShotTime = Time.time; 
-                    switch (ItemManagement.Instance.GetCurrentIndex()) //switch ktory zbiera index  broni i na podstawie tego wybiera rodzaj strzalu
                 case 0:
                     {
                         break;
@@ -57,44 +48,7 @@ public class ShootingManager : MonoBehaviour
                     }
                 case 5:
                     {
-                        case 0:
-                            {
-                                break;
-                            }
-                        case 1:
-                            {
-                                ShootSingle();
-                                break;
-                            }
-                        case 2:
-                            {
-                                ShootSingle();
-                                break;
-                            }
-                        case 3:
-                            {
-                                ShootTriple();
-                                break;
-                            }
-                        case 4:
-                            {
-                                StartCoroutine(ShootBurst(3, 0.1f));
-                                break;
-                            }
-                        case 5:
-                            {
-                                break;
-                            }
-                        case 6:
-                            {
-                                MeeleAttack();
-                                break;
-                            }
-                        case 7:
-                            {
-                                MeeleAttack();
-                                break;
-                            }
+                        break;
                     }
                 case 6:
                     {
@@ -109,8 +63,6 @@ public class ShootingManager : MonoBehaviour
             }
 
 
-                }
-           
         }
     }
     void ShootSingle()
@@ -127,10 +79,8 @@ public class ShootingManager : MonoBehaviour
         Instantiate(bullet, weaponPos.transform.position, Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z - 10));
     }
 
-    void MeeleAttack()
     void MeeleAttack(float meleeRange)
     {
-        ItemManagement.Instance.UpdateAmmo(-1); //melee weapons should only have their durability go down on hit.
         LayerMask hitLayers = LayerMask.GetMask("Enemy");
         int meleeDamage = ItemManagement.Instance.currentWeapon.dmg;
 
@@ -150,7 +100,6 @@ public class ShootingManager : MonoBehaviour
     {
         for (int i = 0; i < shots; i++)
         {
-            if (ItemManagement.Instance.currentWeapon.ammo > 0) 
             if (ItemManagement.Instance.currentWeapon.ammo > 0)
             {
                 ItemManagement.Instance.UpdateAmmo(-1);
@@ -159,16 +108,12 @@ public class ShootingManager : MonoBehaviour
             }
             else
             {
-                break; 
                 break;
             }
         }
-        
 
 
     }
-    
-   
 
 
 }

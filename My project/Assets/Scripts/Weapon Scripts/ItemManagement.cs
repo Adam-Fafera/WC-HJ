@@ -19,8 +19,6 @@ public class ItemManagement : MonoBehaviour
     {
         SetCurrentWeapon(1);
         ammoText.text = "Ammo: " + currentWeapon.ammo;
-        weapon.sprite = currentWeapon.image;
-        currentIndex = 1;
     }
     private void Awake()
     {

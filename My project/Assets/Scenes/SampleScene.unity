@@ -1162,6 +1162,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &687414713
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 687414714}
+  m_Layer: 0
+  m_Name: ------------------ENEMIES-----------------
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &687414714
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 687414713}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &706436834
 GameObject:
   m_ObjectHideFlags: 0
@@ -1323,7 +1354,6 @@ GameObject:
   - component: {fileID: 862724510}
   - component: {fileID: 862724509}
   - component: {fileID: 862724508}
-  m_Layer: 0
   m_Layer: 3
   m_Name: Enemy (1)
   m_TagString: Enemy
@@ -2098,7 +2128,6 @@ GameObject:
   - component: {fileID: 1089151698}
   - component: {fileID: 1089151699}
   m_Layer: 0
-  m_Name: Weapon
   m_Name: WeaponSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2327,7 +2356,6 @@ GameObject:
   - component: {fileID: 1164408785}
   - component: {fileID: 1164408784}
   - component: {fileID: 1164408783}
-  m_Layer: 0
   m_Layer: 3
   m_Name: Enemy (2)
   m_TagString: Enemy
@@ -2735,16 +2763,12 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1021368780}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
       - m_Target: {fileID: 1021368785}
         m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
         m_MethodName: ExitToMain
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -2869,7 +2893,6 @@ GameObject:
   - component: {fileID: 1478558199}
   - component: {fileID: 1478558198}
   - component: {fileID: 1478558197}
-  m_Layer: 0
   m_Layer: 3
   m_Name: Enemy
   m_TagString: Enemy
@@ -3736,6 +3759,7 @@ SceneRoots:
   - {fileID: 2068094106}
   - {fileID: 907346348}
   - {fileID: 1828617763}
+  - {fileID: 687414714}
   - {fileID: 1478558200}
   - {fileID: 862724511}
   - {fileID: 1164408786}

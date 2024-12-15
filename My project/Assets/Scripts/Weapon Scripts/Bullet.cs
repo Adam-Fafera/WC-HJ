@@ -22,13 +22,13 @@ public class Bullet : MonoBehaviour //bullet should inherit it's damage value fr
         rig.velocity = transform.TransformDirection(new Vector3(0, bulletSpeed, 0)); //Changed the position of the projectile
     }
 
-    private void OnCollisionEnter2D(Collision2D collision) //handles bullet collision
+    private void OnTriggerEnter2D(Collider2D collider) //handles bullet collision
     {
-        if (collision.gameObject.tag=="Enemy")
+        if (collider.gameObject.tag=="Enemy")
         {
-            collision.gameObject.GetComponent<Health>().TakeDamage(bulletDamage);
+            collider.gameObject.GetComponent<Health>().TakeDamage(bulletDamage);
         }
-        if (collision.gameObject.tag != "Projectile")
+        if (collider.gameObject.tag != "Projectile")
         {
             Destroy(this.gameObject);
         }

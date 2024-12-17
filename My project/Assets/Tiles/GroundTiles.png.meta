@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e18966f3727cd1d4cb9e1e37be348643
+guid: 3bc43ba12e9eaab49a89848ea14e018e
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,7 +97,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: OfficeGroundTiles_0
+      name: GroundTiles_0
       rect:
         serializedVersion: 2
         x: 0
@@ -111,14 +111,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7a5d238b7ea4df34bb1c7f1187091d4e
-      internalID: -1576805869
+      spriteID: 2033fdcbb1ca81948ae3f922fa7187c2
+      internalID: -478096946
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: OfficeGroundTiles_1
+      name: GroundTiles_1
       rect:
         serializedVersion: 2
         x: 32
@@ -132,14 +132,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fbf150b8a122ab2409693cf56832fa46
-      internalID: -338603449
+      spriteID: 13b29a02fb54f804fb49ed3340e1eb93
+      internalID: 1262850597
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: OfficeGroundTiles_2
+      name: GroundTiles_2
       rect:
         serializedVersion: 2
         x: 64
@@ -153,14 +153,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 83b2c30994467e34ba74726bf1eec406
-      internalID: -5974303
+      spriteID: a0e81e54b65df5f43b635755165b3db5
+      internalID: -750939441
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: OfficeGroundTiles_3
+      name: GroundTiles_3
       rect:
         serializedVersion: 2
         x: 96
@@ -174,14 +174,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6880bc060247c09468c7a5dad7d0146e
-      internalID: -1497448915
+      spriteID: 1e642efba208a80489de76a9c330d1b5
+      internalID: -1083260773
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: OfficeGroundTiles_4
+      name: GroundTiles_4
       rect:
         serializedVersion: 2
         x: 128
@@ -195,8 +195,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 56dd6460cb5d13f408199d7c31e67ce0
-      internalID: -305055050
+      spriteID: a4e9a4040e9617a4b93fec1e21e7d178
+      internalID: -849652929
       vertices: []
       indices: 
       edges: []
@@ -212,11 +212,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      OfficeGroundTiles_0: -1576805869
-      OfficeGroundTiles_1: -338603449
-      OfficeGroundTiles_2: -5974303
-      OfficeGroundTiles_3: -1497448915
-      OfficeGroundTiles_4: -305055050
+      GroundTiles_0: -478096946
+      GroundTiles_1: 1262850597
+      GroundTiles_2: -750939441
+      GroundTiles_3: -1083260773
+      GroundTiles_4: -849652929
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

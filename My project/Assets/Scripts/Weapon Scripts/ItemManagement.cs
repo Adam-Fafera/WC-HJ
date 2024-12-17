@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using TMPro;
+using UnityEngine.SceneManagement;
 public class ItemManagement : MonoBehaviour
 {
     public SpriteRenderer weapon; //czyta gdzie jest teksturka broni
@@ -16,9 +17,8 @@ public class ItemManagement : MonoBehaviour
     public static ItemManagement Instance;
     private void LoadValues()
     {
+        SetCurrentWeapon(1);
         ammoText.text = "Ammo: " + currentWeapon.ammo;
-        weapon.sprite = currentWeapon.image;
-        currentIndex = 1;
     }
     private void Awake()
     {
@@ -27,12 +27,38 @@ public class ItemManagement : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
-            LoadValues();
+            SceneManager.sceneLoaded += OnSceneLoaded;
+
         }
         else
         {
             Destroy(gameObject);
         }
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (ammoText == null)
+        {
+            ammoText = GameObject.Find("Ammo txt")?.GetComponent<TMP_Text>();
+        }
+
+        if (weapon == null)
+        {
+            weapon = GameObject.Find("WeaponSprite")?.GetComponent<SpriteRenderer>();
+        }
+
+        if (ammoText != null && currentWeapon.image != null) //otherwise LoadValues() would cause problems in menu, because of it's presence in main scene
+        {
+            LoadValues();
+        }
+
+
     }
     public void SetCurrentWeapon(int itemId)
     {

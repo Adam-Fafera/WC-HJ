@@ -901,7 +901,6 @@ GameObject:
   - component: {fileID: 591723730}
   - component: {fileID: 591723731}
   - component: {fileID: 591723732}
-  - component: {fileID: 591723733}
   m_Layer: 0
   m_Name: PlayerObject
   m_TagString: Untagged
@@ -925,6 +924,7 @@ Transform:
   - {fileID: 1089151698}
   - {fileID: 1010256039}
   - {fileID: 1783794024}
+  - {fileID: 1509828190}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &591723726
@@ -1060,20 +1060,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &591723733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 591723724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94233924221ccc54aa244a210cfbc779, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  detectionRange: 2
-  colorChange: 0.4
 --- !u!1 &684042326
 GameObject:
   m_ObjectHideFlags: 0
@@ -1502,26 +1488,13 @@ GameObject:
   - component: {fileID: 863898112}
   - component: {fileID: 863898111}
   - component: {fileID: 863898110}
-  - component: {fileID: 863898109}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Shotgun
   m_TagString: 3
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &863898109
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 863898108}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 724df1c29d8885641ba53c0e9f4e66b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &863898110
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1645,26 +1618,13 @@ GameObject:
   - component: {fileID: 907346348}
   - component: {fileID: 907346347}
   - component: {fileID: 907346346}
-  - component: {fileID: 907346345}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mop
   m_TagString: 6
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &907346345
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 907346344}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 724df1c29d8885641ba53c0e9f4e66b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &907346346
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1788,8 +1748,7 @@ GameObject:
   - component: {fileID: 917080884}
   - component: {fileID: 917080883}
   - component: {fileID: 917080882}
-  - component: {fileID: 917080885}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pistol
   m_TagString: 1
   m_Icon: {fileID: 0}
@@ -1908,18 +1867,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &917080885
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 917080881}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 724df1c29d8885641ba53c0e9f4e66b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1010256038
 GameObject:
   m_ObjectHideFlags: 0
@@ -2217,26 +2164,13 @@ GameObject:
   - component: {fileID: 1132644764}
   - component: {fileID: 1132644763}
   - component: {fileID: 1132644762}
-  - component: {fileID: 1132644761}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Rifle
   m_TagString: 4
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1132644761
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1132644760}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 724df1c29d8885641ba53c0e9f4e66b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &1132644762
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5050,6 +4984,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1509828189
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1509828190}
+  - component: {fileID: 1509828191}
+  m_Layer: 0
+  m_Name: InteractionPointer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1509828190
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1509828189}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 591723725}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1509828191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1509828189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94233924221ccc54aa244a210cfbc779, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 3
+  interactableLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &1644910231
 GameObject:
   m_ObjectHideFlags: 0
@@ -5317,26 +5299,13 @@ GameObject:
   - component: {fileID: 1828617763}
   - component: {fileID: 1828617762}
   - component: {fileID: 1828617761}
-  - component: {fileID: 1828617760}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Katana
   m_TagString: 7
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1828617760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1828617759}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 724df1c29d8885641ba53c0e9f4e66b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &1828617761
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5491,26 +5460,13 @@ GameObject:
   - component: {fileID: 2068094106}
   - component: {fileID: 2068094105}
   - component: {fileID: 2068094104}
-  - component: {fileID: 2068094103}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Extinguisher
   m_TagString: 5
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2068094103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2068094102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 724df1c29d8885641ba53c0e9f4e66b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &2068094104
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6636,26 +6592,13 @@ GameObject:
   - component: {fileID: 2127439083}
   - component: {fileID: 2127439082}
   - component: {fileID: 2127439081}
-  - component: {fileID: 2127439080}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Usp
   m_TagString: 2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2127439080
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2127439079}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 724df1c29d8885641ba53c0e9f4e66b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &2127439081
 BoxCollider2D:
   m_ObjectHideFlags: 0

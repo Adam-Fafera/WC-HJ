@@ -316,7 +316,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Ammo: 0'
+  m_text: 'Ammo: 4/inf'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -726,10 +726,10 @@ MonoBehaviour:
   bullet: {fileID: 4218234944498687037, guid: 1c0a20b66288da348a138cb5de3eb97c, type: 3}
   weaponPos: {fileID: 1089151698}
   baseSpreadAngle: 0
-  maxSpreadAngle: 60
-  spreadIncreaseOnMovement: 0.2
-  spreadDecreaseOnStay: 0.1
-  spreadDecreaseOnNotShooting: 0.1
+  maxSpreadAngle: 70
+  spreadIncreaseOnMovement: 0.4
+  spreadDecreaseOnStay: 0.8
+  spreadDecreaseOnNotShooting: 0.2
   leftLine: {fileID: 1106850815}
   rightLine: {fileID: 1173724278}
 --- !u!114 &591723730
@@ -857,50 +857,60 @@ MonoBehaviour:
   currentWeapon:
     name: Pistol
     image: {fileID: 21300000, guid: 1b3f27d4c5aa12040a4304e2d2e5ac1b, type: 3}
-    ammo: 999
+    ammoReserve: 400
+    ammo: 4
     dmg: 10
-    cooldown: 1
+    cooldown: 0.5
   weapons:
   - name: Hand
     image: {fileID: 21300000, guid: d60cfa80e897eca43a37d3e8a124165d, type: 3}
+    ammoReserve: 0
     ammo: 0
     dmg: 0
     cooldown: 0
   - name: Pistol
     image: {fileID: 21300000, guid: 1b3f27d4c5aa12040a4304e2d2e5ac1b, type: 3}
-    ammo: 999
-    dmg: 10
-    cooldown: 1
-  - name: Usp
-    image: {fileID: 21300000, guid: fb72e99c53e43124380ceee14a5f18f5, type: 3}
-    ammo: 6
+    ammoReserve: 400
+    ammo: 4
     dmg: 10
     cooldown: 0.5
+  - name: Usp
+    image: {fileID: 21300000, guid: fb72e99c53e43124380ceee14a5f18f5, type: 3}
+    ammoReserve: 0
+    ammo: 6
+    dmg: 10
+    cooldown: 0.3
   - name: Shotgun
     image: {fileID: 21300000, guid: 199c65d743d11a94aa56aa70017d74c0, type: 3}
+    ammoReserve: 0
     ammo: 9
     dmg: 15
-    cooldown: 2
+    cooldown: 1
   - name: Rifle
     image: {fileID: 21300000, guid: 5e0eb377b4c6a554e9ce73872aaf71df, type: 3}
+    ammoReserve: 0
     ammo: 18
     dmg: 10
-    cooldown: 0.8
+    cooldown: 0.5
   - name: Extinguisher
     image: {fileID: 21300000, guid: 49be2792b11c0a54ea3da1e30ed3e506, type: 3}
+    ammoReserve: 0
     ammo: 1
     dmg: 50
     cooldown: 0
   - name: Mop
     image: {fileID: 21300000, guid: 832c9a7a8d78ffb4ea587b9dcb72785b, type: 3}
+    ammoReserve: 0
     ammo: 5
     dmg: 15
-    cooldown: 1
+    cooldown: 0.7
   - name: Katana
     image: {fileID: 21300000, guid: ee35095e84d034343b558a95281f74bf, type: 3}
+    ammoReserve: 0
     ammo: 4
     dmg: 25
-    cooldown: 1
+    cooldown: 0.7
+  reloadTime: 2
   ammoText: {fileID: 310593792}
 --- !u!4 &684042328
 Transform:

@@ -24,31 +24,30 @@ public class ShootingManager : MonoBehaviour
 
     public void Start()
     {
-        lastPos = weaponPos.transform.position;
+        lastPos = this.transform.position;
     }
 
     public void FixedUpdate()
     {
-        if (weaponPos.position != lastPos)
+        if (this.transform.position != lastPos)
         {
             currentSpreadAngle += (currentSpreadAngle<maxSpreadAngle)?spreadIncreaseOnMovement:0;
-            lastPos = weaponPos.position;
+            lastPos = this.transform.position;
         }
         else
         {
-
             currentSpreadAngle -= (currentSpreadAngle > baseSpreadAngle) ? spreadDecreaseOnStay : 0;
         }
         currentSpreadAngle -= (currentSpreadAngle > baseSpreadAngle) ? spreadDecreaseOnNotShooting : 0;
-        Vector3 leftDirection = Quaternion.Euler(0, 0, -currentSpreadAngle/2) * weaponPos.up;
-        Vector3 rightDirection = Quaternion.Euler(0, 0, currentSpreadAngle/2) * weaponPos.up;
+        Vector3 leftDirection = Quaternion.Euler(0, 0, -currentSpreadAngle/2) * this.transform.up;
+        Vector3 rightDirection = Quaternion.Euler(0, 0, currentSpreadAngle/2) * this.transform.up;
 
         // Ustaw linie
-        leftLine.SetPosition(0, weaponPos.position);
-        leftLine.SetPosition(1, weaponPos.position + leftDirection * 5f); // D³ugoœæ linii
+        leftLine.SetPosition(0, this.transform.position);
+        leftLine.SetPosition(1, this.transform.position + leftDirection * 5f); // D³ugoœæ linii
 
-        rightLine.SetPosition(0, weaponPos.position);
-        rightLine.SetPosition(1, weaponPos.position + rightDirection * 5f);
+        rightLine.SetPosition(0, this.transform.position);
+        rightLine.SetPosition(1, this.transform.position + rightDirection * 5f);
     }
     private void OnFire(InputValue value)
     {
@@ -103,7 +102,7 @@ public class ShootingManager : MonoBehaviour
     {
         ItemManagement.Instance.UpdateAmmo(-1);
         Instantiate(bullet, weaponPos.transform.position, Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z + Random.Range(-currentSpreadAngle, currentSpreadAngle)));
-        currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? 10 : 0;
+        currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? 20 : 0;
     }
 
     void ShootTriple()
@@ -113,7 +112,7 @@ public class ShootingManager : MonoBehaviour
         Instantiate(bullet, weaponPos.transform.position, Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z+tempRandom));
         Instantiate(bullet, weaponPos.transform.position, Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z -10 + tempRandom));
         Instantiate(bullet, weaponPos.transform.position, Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z +10 + tempRandom));
-        currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? 20 : 0;
+        currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? 40 : 0;
     }
 
     void MeeleAttack(float meleeRange)
@@ -139,7 +138,7 @@ public class ShootingManager : MonoBehaviour
             {
                 ItemManagement.Instance.UpdateAmmo(-1);
                 Instantiate(bullet, weaponPos.transform.position, Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z + Random.Range(-currentSpreadAngle, currentSpreadAngle)));
-                currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? 5 : 0;
+                currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? 10 : 0;
                 yield return new WaitForSeconds(time); // ta linijka kodu to waiting room do nastepnego bulleta
             }
             else

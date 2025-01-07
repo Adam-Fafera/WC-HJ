@@ -6,10 +6,18 @@ using UnityEngine.InputSystem;
 
 public class ShootingManager : MonoBehaviour
 {
+    [SerializeField] private List<AudioClip> weaponSounds; // Lista düwiÍkÛw dla kaødej broni
+    [SerializeField] UnityEngine.AudioSource audioSource; // èrÛd≥o düwiÍku
     [SerializeField] GameObject bullet;
     [SerializeField] Transform weaponPos;
     float cooldown;
     private float lastShotTime = 0f; // czas ostatniego bulleta
+
+    private void Awake()
+    {
+        audioSource = GetComponent<UnityEngine.AudioSource>();
+    }
+
     private void OnFire(InputValue value)
     {
 
@@ -18,6 +26,7 @@ public class ShootingManager : MonoBehaviour
         cooldown = ItemManagement.Instance.currentWeapon.cooldown; // dostosowywanie cd do broni
         if (Time.time >= lastShotTime + cooldown && ItemManagement.Instance.currentWeapon.ammo > 0)
         {
+            int currentWeaponIndex = ItemManagement.Instance.GetCurrentIndex();
 
             lastShotTime = Time.time;
             switch (ItemManagement.Instance.GetCurrentIndex()) //switch ktory zbiera index  broni i na podstawie tego wybiera rodzaj strzalu
@@ -58,8 +67,14 @@ public class ShootingManager : MonoBehaviour
                 case 7:
                     {
                         MeeleAttack(1.2f);
+                        audioSource.PlayOneShot(weaponSounds[currentWeaponIndex]);
                         break;
                     }
+            }
+
+            if (audioSource != null && weaponSounds[currentWeaponIndex] != null)
+            {
+                audioSource.PlayOneShot(weaponSounds[currentWeaponIndex]); // Odtwarzaj düwiÍk odpowiadajπcy indeksowi broni
             }
 
 

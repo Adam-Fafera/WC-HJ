@@ -51,7 +51,7 @@ public class ShootingManager : MonoBehaviour
 
         // Ustaw linie
         leftLine.SetPosition(0, this.transform.position);
-        leftLine.SetPosition(1, this.transform.position + leftDirection * 5f); // D�ugo�� linii
+        leftLine.SetPosition(1, this.transform.position + leftDirection * 5f); // Dlugosc linii
 
         rightLine.SetPosition(0, this.transform.position);
         rightLine.SetPosition(1, this.transform.position + rightDirection * 5f);

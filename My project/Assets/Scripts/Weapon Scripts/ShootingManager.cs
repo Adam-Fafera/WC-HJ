@@ -72,22 +72,22 @@ public class ShootingManager : MonoBehaviour
                     }
                 case 1:
                     {
-                        ShootSingle();
+                        RaySingle();
                         break;
                     }
                 case 2:
                     {
-                        ShootSingle();
+                        RaySingle();
                         break;
                     }
                 case 3:
                     {
-                        ShootTriple();
+                        RayTriple();
                         break;
                     }
                 case 4:
                     {
-                        StartCoroutine(ShootBurst(3, 0.1f));
+                        StartCoroutine(RayBurst(3, 0.1f));
                         break;
                     }
                 case 5:
@@ -164,5 +164,84 @@ public class ShootingManager : MonoBehaviour
             }
         }
     }
+    void RaySingle()
+    {
+        LayerMask hitLayers = LayerMask.GetMask("Enemy");
+        int damage = ItemManagement.Instance.currentWeapon.dmg;
 
+        Vector2 direction = Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z + Random.Range(-currentSpreadAngle, currentSpreadAngle)) * Vector2.up;
+        RaycastHit2D hit = Physics2D.Raycast(this.transform.position, direction, 100f, hitLayers);
+
+        if (hit.collider != null)
+        {
+            hit.collider.GetComponent<Health>()?.TakeDamage(damage);
+        }
+
+        ItemManagement.Instance.UpdateAmmo(-1);
+        currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? 20 : 0;
+    }
+
+    void RayTriple()
+    {
+        LayerMask hitLayers = LayerMask.GetMask("Enemy");
+        int damage = ItemManagement.Instance.currentWeapon.dmg;
+
+        float tempRandom = Random.Range(-currentSpreadAngle, currentSpreadAngle);
+
+        //LeftRay
+        Vector2 leftDirection = Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z - 10 + tempRandom) * Vector2.up;
+        RaycastHit2D leftHit = Physics2D.Raycast(this.transform.position, leftDirection, 100f, hitLayers);
+        if (leftHit.collider != null)
+        {
+            leftHit.collider.GetComponent<Health>()?.TakeDamage(damage);
+        }
+
+        //MiddleRay
+        Vector2 middleDirection = Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z + tempRandom) * Vector2.up;
+        RaycastHit2D middleHit = Physics2D.Raycast(this.transform.position, middleDirection, 100f, hitLayers);
+        if (middleHit.collider != null)
+        {
+            middleHit.collider.GetComponent<Health>()?.TakeDamage(damage);
+        }
+
+        //RightRay
+        Vector2 rightDirection = Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z + 10 + tempRandom) * Vector2.up;
+        RaycastHit2D rightHit = Physics2D.Raycast(this.transform.position, rightDirection, 100f, hitLayers);
+        if (rightHit.collider != null)
+        {
+            rightHit.collider.GetComponent<Health>()?.TakeDamage(damage);
+        }
+
+        ItemManagement.Instance.UpdateAmmo(-3);
+        currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? 40 : 0;
+    }
+
+    IEnumerator RayBurst(int shots, float time)
+    {
+        LayerMask hitLayers = LayerMask.GetMask("Enemy");
+        int damage = ItemManagement.Instance.currentWeapon.dmg;
+
+        for (int i = 0; i < shots; i++)
+        {
+            if (ItemManagement.Instance.currentWeapon.ammo > 0)
+            {
+                Vector2 direction = Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z + Random.Range(-currentSpreadAngle, currentSpreadAngle)) * Vector2.up;
+                RaycastHit2D hit = Physics2D.Raycast(this.transform.position, direction, 100f, hitLayers);
+
+                if (hit.collider != null)
+                {
+                    hit.collider.GetComponent<Health>()?.TakeDamage(damage);
+                }
+
+                ItemManagement.Instance.UpdateAmmo(-1);
+                currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? 10 : 0;
+
+                yield return new WaitForSeconds(time);
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
 }

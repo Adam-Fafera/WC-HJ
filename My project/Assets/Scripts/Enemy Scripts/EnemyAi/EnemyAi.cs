@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,118 +6,134 @@ using UnityEngine.AI;
 
 public class EnemyAi : MonoBehaviour
 {
+    [SerializeField] public GameObject patrolPointPrefab;
+    [SerializeField] public float rotationSpeed = 5f;
 
-    [SerializeField]
-    public GameObject patrolPointPrefab;
+    public List<GameObject> patrolPoints = new List<GameObject>(); // Used for patrolling
+    public States currentState = States.Patrol; // Handles states
 
-
-    public List<GameObject> patrolPoints = new List<GameObject>();
-    public States currentState = States.Patrol;
     private NavMeshAgent navMeshAgent;
-    private int currentPointIndex = 0;
+
+    private int currentPointIndex = 0; // Helps iterate through the patrol points
+
+    private void Awake()
+    {
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.freezeRotation = true;  // Prevent rotation via Rigidbody2D
+        }
+    }
 
     private void Start()
     {
-        // Get the NavMeshAgent component
         navMeshAgent = GetComponent<NavMeshAgent>();
-      
-        // Ensure the points array is not empty
+
+
+        // Disable all automatic rotation updates
+        navMeshAgent.updateRotation = false;
+        navMeshAgent.angularSpeed = 0f;  // Set angular speed to 0 to prevent rotation
+        navMeshAgent.updateUpAxis = false;
+
+        // Check if there are patrol points
         if (patrolPoints.Count > 0)
         {
-            // Start cycling immediately
             MoveToNextPoint();
         }
         else
         {
-            Debug.LogError("No patrolPoints defined for the character to cycle to.");
+            Debug.LogError("No patrol points defined.");
         }
     }
 
     private void Update()
     {
+      
 
-        this.transform.rotation = Quaternion.Euler(0f, this.transform.rotation.y, this.transform.rotation.z);
-        // Handle state-based actions
+      
+
+        // Handle state machine (can be expanded with other states like idle, chase, etc.)
         switch (currentState)
         {
             case States.Idle:
-                // The character is idle, so no movement.
                 navMeshAgent.isStopped = true;
                 break;
 
             case States.Patrol:
-                // If the agent is not moving, move to the next point
+                // Move between points
                 if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f)
                 {
-                    // Move to the next point in the array
                     MoveToNextPoint();
                 }
                 break;
 
-                // Add other cases for other states if necessary
+                // Future states like chasing, attacking, etc.
+        }
+
+        // Rotate the character towards the direction it's moving
+        HandleRotation();
+    }
+    
+
+   
+    private void MoveToNextPoint()
+    {
+        navMeshAgent.isStopped = false;
+
+        // Set the destination of the NavMeshAgent to the next patrol point
+        navMeshAgent.SetDestination(patrolPoints[currentPointIndex].transform.position);
+
+        // Update current point index to loop through patrol points
+        currentPointIndex = (currentPointIndex + 1) % patrolPoints.Count;
+    }
+
+    private void HandleRotation()
+    {
+        // Check if the NavMeshAgent is moving (velocity is not zero)
+        if (navMeshAgent.velocity.sqrMagnitude > 0.1f)
+        {
+            // Get direction from the velocity (the direction the agent is moving)
+            Vector3 direction = navMeshAgent.velocity.normalized;
+            direction.z = 0f; // Ensure the rotation stays in 2D (only on the Z-axis)
+
+            // Calculate the angle in degrees for rotation based on direction
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+            // Apply the rotation directly (no smoothing)
+            transform.rotation = Quaternion.Euler(0f, 0f, angle);
         }
     }
 
-    private void MoveToNextPoint()
-    {
-        // Set the agent to go to the next point
-        
-            navMeshAgent.isStopped = false;
-            //Debug.Log(currentPointIndex);
-            navMeshAgent.SetDestination(patrolPoints[currentPointIndex].transform.position);
-            
-            currentPointIndex = (currentPointIndex + 1) % patrolPoints.Count;
-       
-    }
-
-   
-    public void ChangeState(States newState)
+    public void ChangeState(States newState) // Changes the state for the state machine
     {
         currentState = newState;
     }
 
-
-
-    public void StartSpawning()
+    public void StartSpawning() // Used for making a list of points for the patrol route
     {
-        // Calculate the spawn position: 1 unit further to the right for each entity spawned
-        float currentOffset = (patrolPoints.Count + 1); // The offset will equal the number of objects already spawned + 1
-
-        // Spawn the object at the calculated position (based on the currentOffset)
+        float currentOffset = (patrolPoints.Count + 1);
         Vector3 spawnPosition = transform.position + Vector3.right * currentOffset;
-
-        // Instantiate the object at the spawn position
         GameObject newObject = Instantiate(patrolPointPrefab, spawnPosition, Quaternion.identity);
 
-        // Check if the parent container ("pPoints") already exists, if not, create it
         Transform parentTransform = transform.parent.Find("pPoints");
 
         if (parentTransform == null)
         {
-            // Create a new GameObject called "pPoints" under the parent of the current GameObject
             GameObject pPoints = new GameObject("pPoints");
-            pPoints.transform.SetParent(transform.parent);  // Set its parent to be the same as the parent of the current object
+            pPoints.transform.SetParent(transform.parent);
             parentTransform = pPoints.transform;
         }
 
-        // Set the new object's parent to "pPoints"
         newObject.transform.SetParent(parentTransform);
-
-        // Add the newly spawned object to the patrolPoints list
         patrolPoints.Add(newObject);
-
-        // Make the object active
         newObject.SetActive(true);
     }
 }
 
-
-
-
 public enum States
 {
     Idle,
-Patrol,
-Chasing,
-Attacking
+    Patrol,
+    Chasing,
+    Attacking
 }

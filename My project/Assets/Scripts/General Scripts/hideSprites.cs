@@ -6,7 +6,7 @@ public class hideSprites : MonoBehaviour
 {
     void Start()
     {
-        try
+        try//used for hiding any sprites during gameplay
         {
             
             this.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().enabled = false;

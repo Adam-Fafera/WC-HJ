@@ -6,20 +6,20 @@ public class EnemyAiEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        // Get the reference to the EnemyAi component
+           //script that makes defining PatrolPoints easier
         EnemyAi spawner = (EnemyAi)target;
 
-        // Display the default inspector elements
+        //display deafult inspector elements
         DrawDefaultInspector();
 
 
-        // Button to start the spawning process
+        //button for spawning
         if (GUILayout.Button("Start Spawning"))
         {
             spawner.StartSpawning();
         }
 
-        // Display the list of spawned objects (optional, depending on how you want to show this)
+        //displays a list of spawned objects
         EditorGUILayout.Space();
     }
 }

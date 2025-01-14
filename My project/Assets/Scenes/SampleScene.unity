@@ -7823,7 +7823,7 @@ GameObject:
   - component: {fileID: 6436382573691462901}
   - component: {fileID: 1727659969882914011}
   - component: {fileID: 6342970593302898603}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Rifle
   m_TagString: 4
   m_Icon: {fileID: 0}
@@ -8065,7 +8065,7 @@ GameObject:
   - component: {fileID: 2028571858546269313}
   - component: {fileID: 2870204771606809368}
   - component: {fileID: 8724324635665900946}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Usp
   m_TagString: 2
   m_Icon: {fileID: 0}

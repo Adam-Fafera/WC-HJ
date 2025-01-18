@@ -10,6 +10,9 @@ public class InteractionPointer : MonoBehaviour
     private GameObject highlightedItem; // Obiekt aktualnie podœwietlony
     private int itemId;
     private bool pickable;
+    [SerializeField] private float x=1f;
+    [SerializeField] private float y=1f;
+
 
     void Update()
     {
@@ -53,21 +56,36 @@ public class InteractionPointer : MonoBehaviour
             }
         }
 
+
         void ApplyHighlight(GameObject item)
         {
-            SpriteRenderer spriteRenderer = item.GetComponent<SpriteRenderer>();
-            if (spriteRenderer != null)
+            GameObject outline = new GameObject("Outline");
+            outline.transform.position = item.transform.position;
+            outline.transform.localScale = new Vector3(1.1f*x, 1.2f*y, 1f); // Skalowanie konturu
+            outline.transform.SetParent(item.transform); // Ustaw kontur jako dziecko obiektu
+
+            SpriteRenderer itemRenderer = item.GetComponent<SpriteRenderer>();
+            if (itemRenderer != null)
             {
-                spriteRenderer.color = Color.blue;
+                SpriteRenderer outlineRenderer = outline.AddComponent<SpriteRenderer>();
+                outlineRenderer.sprite = itemRenderer.sprite; // U¿ycie tego samego sprite'a
+
+                // Przypisz materia³ z jasn¹ emisj¹
+                Material outlineMaterial = Resources.Load<Material>("WhiteOutlineMaterial");
+                outlineMaterial.SetColor("_EmissionColor", Color.white * 2); // Zwiêkszona jasnoœæ
+                outlineRenderer.material = outlineMaterial;
+
+                outlineRenderer.sortingOrder = itemRenderer.sortingOrder - 1; // Kontur za obiektem
             }
         }
 
+
         void ResetHighlight(GameObject item)
         {
-            SpriteRenderer spriteRenderer = item.GetComponent<SpriteRenderer>();
-            if (spriteRenderer != null)
+            Transform outline = item.transform.Find("Outline");
+            if (outline != null)
             {
-                spriteRenderer.color = Color.white;
+                Destroy(outline.gameObject);
             }
         }
     }

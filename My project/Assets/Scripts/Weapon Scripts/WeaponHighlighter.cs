@@ -10,8 +10,8 @@ public class InteractionPointer : MonoBehaviour
     private GameObject highlightedItem; // Obiekt aktualnie podœwietlony
     private int itemId;
     private bool pickable;
-    [SerializeField] private float x=1;
-    [SerializeField] private float y=1;
+    [SerializeField] private float x=1f;
+    [SerializeField] private float y=1f;
 
 
     void Update()
@@ -61,7 +61,7 @@ public class InteractionPointer : MonoBehaviour
         {
             GameObject outline = new GameObject("Outline");
             outline.transform.position = item.transform.position;
-            outline.transform.localScale = new Vector3(x, y, 1f); // Skalowanie konturu
+            outline.transform.localScale = new Vector3(1.1f*x, 1.2f*y, 1f); // Skalowanie konturu
             outline.transform.SetParent(item.transform); // Ustaw kontur jako dziecko obiektu
 
             SpriteRenderer itemRenderer = item.GetComponent<SpriteRenderer>();

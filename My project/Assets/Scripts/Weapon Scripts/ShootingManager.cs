@@ -13,6 +13,7 @@ public class ShootingManager : MonoBehaviour
     Vector3 lastPos;
     float cooldown;
     private float lastShotTime = 0f; // czas ostatniego bulleta
+    private bool isAiming = false;
 
     private void Awake()
     {
@@ -25,6 +26,8 @@ public class ShootingManager : MonoBehaviour
     [SerializeField] private float spreadDecreaseOnStay = 0.1f;
     [SerializeField] private float spreadDecreaseOnNotShooting = 0.1f;
     private float currentSpreadAngle;
+
+    [SerializeField] GameObject[] Throwables;
 
     [SerializeField] private LineRenderer leftLine;
     [SerializeField] private LineRenderer rightLine;
@@ -41,20 +44,90 @@ public class ShootingManager : MonoBehaviour
             currentSpreadAngle += (currentSpreadAngle<maxSpreadAngle)?spreadIncreaseOnMovement:0;
             lastPos = this.transform.position;
         }
-        else
+        else if(isAiming==true)
         {
             currentSpreadAngle -= (currentSpreadAngle > baseSpreadAngle) ? spreadDecreaseOnStay : 0;
         }
-        currentSpreadAngle -= (currentSpreadAngle > baseSpreadAngle) ? spreadDecreaseOnNotShooting : 0;
-        Vector3 leftDirection = Quaternion.Euler(0, 0, -currentSpreadAngle/2) * this.transform.up;
-        Vector3 rightDirection = Quaternion.Euler(0, 0, currentSpreadAngle/2) * this.transform.up;
+        if (isAiming == true)
+        {
+            currentSpreadAngle -= (currentSpreadAngle > baseSpreadAngle) ? spreadDecreaseOnNotShooting : 0;
+            Vector3 leftDirection = Quaternion.Euler(0, 0, -currentSpreadAngle / 2) * this.transform.up;
+            Vector3 rightDirection = Quaternion.Euler(0, 0, currentSpreadAngle / 2) * this.transform.up;
 
-        // Ustaw linie
-        leftLine.SetPosition(0, this.transform.position);
-        leftLine.SetPosition(1, this.transform.position + leftDirection * 5f); // Dlugosc linii
+            leftLine.SetPosition(0, this.transform.position);
+            leftLine.SetPosition(1, this.transform.position + leftDirection * 5f); // Dlugosc linii
 
-        rightLine.SetPosition(0, this.transform.position);
-        rightLine.SetPosition(1, this.transform.position + rightDirection * 5f);
+            rightLine.SetPosition(0, this.transform.position);
+            rightLine.SetPosition(1, this.transform.position + rightDirection * 5f);
+        }
+        else
+        {
+
+        }
+
+    }
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            OnRightClickPress();
+        }
+        if (Input.GetKeyUp(KeyCode.Mouse1))
+        {
+            OnRightClickRelease();
+        }
+        Debug.Log(isAiming);
+    }
+    private void OnRightClickPress()
+    {
+        switch (ItemManagement.Instance.GetCurrentIndex())
+        {
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+                {
+                    isAiming = true;
+                    leftLine.gameObject.SetActive(true);
+                    rightLine.gameObject.SetActive(true);
+                    break;
+                }
+            case 5:
+                {
+                    Instantiate(Throwables[0], weaponPos.transform.position, this.transform.rotation);
+                    ItemManagement.Instance.SetCurrentWeapon(0);
+                    break;
+                }
+            case 6:
+                {
+                    Instantiate(Throwables[1], weaponPos.transform.position, this.transform.rotation);
+                    ItemManagement.Instance.SetCurrentWeapon(0);
+                    break;
+                }
+            case 7:
+                {
+                    Instantiate(Throwables[2], weaponPos.transform.position, this.transform.rotation);
+                    ItemManagement.Instance.SetCurrentWeapon(0);
+                    break;
+                }
+            case 8:
+                {
+                    Instantiate(Throwables[3], weaponPos.transform.position, this.transform.rotation);
+                    ItemManagement.Instance.SetCurrentWeapon(0);
+                    break;
+                }
+            default:
+                {
+                    break;
+                }
+        }
+    }
+    private void OnRightClickRelease()
+    {
+        isAiming = false;
+        leftLine.gameObject.SetActive(false);
+        rightLine.gameObject.SetActive(false);
     }
     private void OnFire(InputValue value)
     {
@@ -72,22 +145,22 @@ public class ShootingManager : MonoBehaviour
                     }
                 case 1:
                     {
-                        RaySingle();
+                        if(isAiming == true) RaySingle();
                         break;
                     }
                 case 2:
                     {
-                        RaySingle();
+                        if (isAiming == true) RaySingle();
                         break;
                     }
                 case 3:
                     {
-                        RayTriple();
+                        if (isAiming == true) RayTriple();
                         break;
                     }
                 case 4:
                     {
-                        StartCoroutine(RayBurst(3, 0.1f));
+                        if (isAiming == true) StartCoroutine(RayBurst(3, 0.1f));
                         break;
                     }
                 case 5:
@@ -103,6 +176,14 @@ public class ShootingManager : MonoBehaviour
                     {
                         MeeleAttack(1.2f);
                         audioSource.PlayOneShot(weaponSounds[currentWeaponIndex]);
+                        break;
+                    }
+                case 8:
+                    {
+                        break;
+                    }
+                default:
+                    {
                         break;
                     }
             }

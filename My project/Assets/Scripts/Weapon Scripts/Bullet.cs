@@ -7,11 +7,10 @@ public class Bullet : MonoBehaviour //bullet should inherit it's damage value fr
     private Rigidbody2D rig;
     [SerializeField] private float bulletSpeed; //speed of the projectile
     [SerializeField] private int destroyTime; //time it exists untill it's destroyed.
-    private int bulletDamage;
+    [SerializeField] private int bulletDamage;
     void Start()
     {
         rig = this.GetComponent<Rigidbody2D>();
-        bulletDamage = ItemManagement.Instance.currentWeapon.dmg;
 
         Destroy(gameObject,destroyTime); //added object destruction after X ammount of time (5 seconds as of now)
 

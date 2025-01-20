@@ -10,8 +10,6 @@ public class InteractionPointer : MonoBehaviour
     private GameObject highlightedItem; // Obiekt aktualnie podœwietlony
     private int itemId;
     private bool pickable;
-    [SerializeField] private float x=1f;
-    [SerializeField] private float y=1f;
 
 
     void Update()
@@ -19,28 +17,29 @@ public class InteractionPointer : MonoBehaviour
         Vector2 playerPosition = transform.parent.position;
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = (mousePosition - playerPosition).normalized;
-        
 
+        // Wysy³amy Raycast od gracza w kierunku kursora, do maksymalnej odleg³oœci i na warstwie interactableLayer
         RaycastHit2D hit = Physics2D.Raycast(playerPosition, direction, maxDistance, interactableLayer);
 
         if (hit.collider != null)
         {
+            // Je¿eli trafiliœmy w inny obiekt ni¿ poprzednio, zresetuj podœwietlenie starego
             if (highlightedItem != hit.collider.gameObject)
             {
                 if (highlightedItem != null)
                 {
                     ResetHighlight(highlightedItem);
-
                 }
+                // Ustawiamy nowy obiekt jako podœwietlony
                 highlightedItem = hit.collider.gameObject;
-                itemId = int.Parse(highlightedItem.gameObject.tag);
-                ApplyHighlight(highlightedItem);
                 pickable = true;
-                
+
+                ApplyHighlight(highlightedItem);
             }
         }
         else
         {
+            // Je¿eli Raycast nic nie trafi³, a coœ wczeœniej by³o podœwietlone, resetujemy
             if (highlightedItem != null)
             {
                 ResetHighlight(highlightedItem);
@@ -48,45 +47,70 @@ public class InteractionPointer : MonoBehaviour
                 pickable = false;
             }
         }
-        if (Input.GetKey(KeyCode.E))
+
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            if (pickable == true)
+            if (highlightedItem != null && pickable)
             {
-                ItemManagement.Instance.SetCurrentWeapon(itemId); // zmiana itemu (funkcja) w itemManagement
+                // Rozró¿niamy obiekt po tagu
+                if (highlightedItem.CompareTag("Barrel"))
+                {
+                    BarrelScript barrel = highlightedItem.GetComponent<BarrelScript>();
+                    if (barrel != null)
+                    {
+                        barrel.TogglePickup();
+                        ResetHighlight(highlightedItem);
+                    }
+                    
+                }
+                else
+                {
+                    int weaponId;
+                    if (int.TryParse(highlightedItem.tag, out weaponId))
+                    {
+                        ItemManagement.Instance.SetCurrentWeapon(weaponId);
+                    }
+                    
+                }
             }
         }
+    }
 
+    // Tworzy obiekt "Outline" jako dziecko obiektu, który chcemy podœwietliæ
+    void ApplyHighlight(GameObject item)
+    {
+        GameObject outline = new GameObject("Outline");
+        outline.transform.position = item.transform.position;
+        outline.transform.localScale = new Vector3(1.1f, 1.2f, 1f); // Skalowanie konturu
+        outline.transform.SetParent(item.transform);               // Kontur jako dziecko obiektu
 
-        void ApplyHighlight(GameObject item)
+        SpriteRenderer itemRenderer = item.GetComponent<SpriteRenderer>();
+        if (itemRenderer != null)
         {
-            GameObject outline = new GameObject("Outline");
-            outline.transform.position = item.transform.position;
-            outline.transform.localScale = new Vector3(1.1f*x, 1.2f*y, 1f); // Skalowanie konturu
-            outline.transform.SetParent(item.transform); // Ustaw kontur jako dziecko obiektu
+            SpriteRenderer outlineRenderer = outline.AddComponent<SpriteRenderer>();
+            outlineRenderer.sprite = itemRenderer.sprite; // U¿ycie tego samego sprite'a
 
-            SpriteRenderer itemRenderer = item.GetComponent<SpriteRenderer>();
-            if (itemRenderer != null)
+            Material outlineMaterial = Resources.Load<Material>("WhiteOutlineMaterial");
+            if (outlineMaterial != null)
             {
-                SpriteRenderer outlineRenderer = outline.AddComponent<SpriteRenderer>();
-                outlineRenderer.sprite = itemRenderer.sprite; // U¿ycie tego samego sprite'a
-
-                // Przypisz materia³ z jasn¹ emisj¹
-                Material outlineMaterial = Resources.Load<Material>("WhiteOutlineMaterial");
                 outlineMaterial.SetColor("_EmissionColor", Color.white * 2); // Zwiêkszona jasnoœæ
                 outlineRenderer.material = outlineMaterial;
-
-                outlineRenderer.sortingOrder = itemRenderer.sortingOrder - 1; // Kontur za obiektem
             }
-        }
-
-
-        void ResetHighlight(GameObject item)
-        {
-            Transform outline = item.transform.Find("Outline");
-            if (outline != null)
+            else
             {
-                Destroy(outline.gameObject);
+                Debug.LogWarning("Nie znaleziono materia³u 'WhiteOutlineMaterial' w Resources!");
             }
+
+            outlineRenderer.sortingOrder = itemRenderer.sortingOrder - 1;
+        }
+    }
+
+    void ResetHighlight(GameObject item)
+    {
+        Transform outline = item.transform.Find("Outline");
+        if (outline != null)
+        {
+            Destroy(outline.gameObject);
         }
     }
 }

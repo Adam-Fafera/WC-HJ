@@ -10,8 +10,14 @@ public class BarrelScript : MonoBehaviour
     [SerializeField] private float pickUpRange = 6f;   // Zasiêg podnoszenia
 
     private bool isCarried = false;
-    private int previousWeaponIndex = -1;  
+    private int previousWeaponIndex = -1;
+    private int originalLayer;
+    [SerializeField] private InteractionPointer interactionPointer;
 
+    private void Awake()
+    {
+        originalLayer = gameObject.layer;
+    }
     public void TogglePickup()
     {
         if (!isCarried)
@@ -28,11 +34,20 @@ public class BarrelScript : MonoBehaviour
                 transform.localRotation = Quaternion.identity;
 
                 isCarried = true;
+
+                gameObject.layer = LayerMask.NameToLayer("Barrel");
+
+                if (interactionPointer != null)
+                {
+                    interactionPointer.SetRaycastToOnlyCarriedBarrel();
+                }
+
             }
             else
             {
                 Debug.Log("Beczka jest za daleko, ¿eby j¹ podnieœæ.");
-            }
+            }        
+
         }
         else
         {
@@ -41,10 +56,19 @@ public class BarrelScript : MonoBehaviour
                 ItemManagement.Instance.SetCurrentWeapon(previousWeaponIndex);
             }
 
+            gameObject.layer = originalLayer;
+
             // Odpinamy od gracza
             transform.SetParent(null);
 
             isCarried = false;
+
+            if (interactionPointer != null)
+                interactionPointer.RestoreOriginalRaycastLayer();
         }
+    }
+    public bool IsBeingCarried()
+    {
+        return isCarried;
     }
 }

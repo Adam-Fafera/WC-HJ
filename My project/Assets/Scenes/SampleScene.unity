@@ -5234,6 +5234,9 @@ MonoBehaviour:
   interactableLayer:
     serializedVersion: 2
     m_Bits: 64
+  originalInteractableLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &1592409649
 GameObject:
   m_ObjectHideFlags: 0
@@ -5370,6 +5373,7 @@ MonoBehaviour:
   player: {fileID: 591723725}
   holdPoint: {fileID: 1509828190}
   pickUpRange: 2
+  interactionPointer: {fileID: 1509828191}
 --- !u!1 &1644910231
 GameObject:
   m_ObjectHideFlags: 0

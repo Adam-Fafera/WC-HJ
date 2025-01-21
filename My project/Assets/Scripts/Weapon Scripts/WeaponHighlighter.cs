@@ -7,13 +7,19 @@ public class InteractionPointer : MonoBehaviour
 {
     public float maxDistance = 5f; // Maksymalna odleg³oœæ Raycast
     public LayerMask interactableLayer; // Warstwa, któr¹ Raycast wykryje
+    public LayerMask originalInteractableLayer;
     private GameObject highlightedItem; // Obiekt aktualnie podœwietlony
     private int itemId;
     private bool pickable;
 
+    private void Awake()
+    {
+        originalInteractableLayer = interactableLayer;
+    }
 
     void Update()
     {
+
         Vector2 playerPosition = transform.parent.position;
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = (mousePosition - playerPosition).normalized;
@@ -59,9 +65,7 @@ public class InteractionPointer : MonoBehaviour
                     if (barrel != null)
                     {
                         barrel.TogglePickup();
-                        ResetHighlight(highlightedItem);
                     }
-                    
                 }
                 else
                 {
@@ -113,4 +117,25 @@ public class InteractionPointer : MonoBehaviour
             Destroy(outline.gameObject);
         }
     }
+
+    public void SetRaycastToOnlyCarriedBarrel()
+    {
+        // Zapisz ID warstwy:
+        int carriedBarrelLayer = LayerMask.NameToLayer("Barrel");
+        // Jeœli warstwa istnieje (>= 0)
+        if (carriedBarrelLayer >= 0)
+        {
+            // Maska = 1 << carriedBarrelLayer
+            LayerMask onlyCarriedMask = 1 << carriedBarrelLayer;
+            interactableLayer = onlyCarriedMask;
+        }
+        ResetHighlight(highlightedItem);
+    }
+
+
+    public void RestoreOriginalRaycastLayer()
+    {
+        interactableLayer = originalInteractableLayer;
+    }
+
 }

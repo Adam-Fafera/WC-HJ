@@ -4,12 +4,8 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] private int health;
+    [SerializeField] protected int health;
 
-    public Health(int health)
-    {
-        this.health = health;
-    }
 
     public int HealthGet 
     {

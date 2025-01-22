@@ -4,9 +4,20 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] int health;
+    [SerializeField] private int health;
 
-    public void TakeDamage(int damage)
+    public Health(int health)
+    {
+        this.health = health;
+    }
+
+    public int HealthGet 
+    {
+        get {return health;}
+        set {health = value;}
+    }
+
+    public virtual void TakeDamage(int damage)
     {
         health -= damage;
 

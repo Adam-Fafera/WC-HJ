@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Npc : Health
+//Class used for all Npc's
+public class Npc : Health 
 {
 
 
@@ -11,22 +12,25 @@ public class Npc : Health
     protected NavMeshAgent navMeshAgent;
 
     [SerializeField]
-    public GameObject playerRef;
-    public bool CanSeePlayer { get; private set; }
+    public GameObject playerRef;//player ref, used to referance the Player Character
+    public bool CanSeePlayer { get; private set; } //bool used to check line of sight with the player 
+    public float radius = 10; //radius of the line of sight
+    [Range(1, 360)] public float angle = 45; //angle of the line of sight
 
-    public float radius = 10;
-    [Range(1, 360)] public float angle = 45;
-    public LayerMask targetLayer;
-    public LayerMask obstructionLayer;
+
+    public LayerMask targetLayer; //layer on which the player is
+    public LayerMask obstructionLayer; //layer on which obstacles are
 
     protected Health healthComponent;
+
+    protected Vector3 lastKnownPlayerPosition = Vector3.zero; //last known player position (lkpp)
 
     protected void Awake()
     {
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         if (rb != null)
         {
-            rb.freezeRotation = true;
+            rb.freezeRotation = true; //freze rotation to avoid problems with navMeshAgent
         }
     }
     void Start()
@@ -35,7 +39,7 @@ public class Npc : Health
         navMeshAgent = GetComponent<NavMeshAgent>();
 
 
-        // Disable all automatic rotation updates
+        //disable all automatic rotation updates
         navMeshAgent.updateRotation = false;
         navMeshAgent.angularSpeed = 0f;
         navMeshAgent.updateUpAxis = false;
@@ -47,7 +51,7 @@ public class Npc : Health
 
 
 
-    protected IEnumerator FOVCheck()
+    protected IEnumerator FOVCheck() //makes a vision check every 0.2 seconds
     {
         WaitForSeconds wait = new WaitForSeconds(0.2f);
         while (true)
@@ -56,7 +60,7 @@ public class Npc : Health
             FOV();
         }
     }
-    public override void TakeDamage(int damage)
+    public override void TakeDamage(int damage) //function used for taking damage
     {
         HealthGet -= damage;
 
@@ -67,37 +71,38 @@ public class Npc : Health
     }
     protected void HandleRotation()
     {
-        // Check if the NavMeshAgent is moving (velocity is not zero)
+        //check if the object is mobing
         if (navMeshAgent.velocity.sqrMagnitude > 0.1f)
         {
-            // Get direction from the velocity (the direction the agent is moving)
+            //get velocity from direction of movement
             Vector3 direction = navMeshAgent.velocity.normalized;
-            direction.z = 0f; // Ensure the rotation stays in 2D (only on the Z-axis)
+            direction.z = 0f; //block movement to a 2D plane
 
-            // Calculate the angle in degrees for rotation based on direction
+            //calculate the angle in degrees
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-            // Apply the rotation directly (no smoothing)
+            //aply the rotation
             transform.rotation = Quaternion.Euler(0f, 0f, angle);
         }
     }
 
     protected void FOV()
     {
-        Collider2D[] rangeCheck = Physics2D.OverlapCircleAll(transform.position, radius, targetLayer);
+        Collider2D[] rangeCheck = Physics2D.OverlapCircleAll(transform.position, radius, targetLayer); //colider used to see if something is within the range of vision
 
         if (rangeCheck.Length > 0)
         {
             Transform target = rangeCheck[0].transform;
             Vector2 directionToTarget = (target.position - transform.position).normalized;
 
-            if (Vector2.Angle(transform.right, directionToTarget) < angle / 2)
+            if (Vector2.Angle(transform.right, directionToTarget) < angle / 2) //checks if the player is within the vision cone
             {
                 float distanceToTarget = Vector2.Distance(transform.position, target.position);
 
-                if (!Physics2D.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionLayer))
+                if (!Physics2D.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionLayer)) //casts a raycast to the player, if it hits the player can see it
                 {
                     CanSeePlayer = true;
+                    //lastKnownPlayerPosition = target.position;
                 }
                 else
                 {
@@ -116,7 +121,7 @@ public class Npc : Health
 
 
     }
-    protected void OnDrawGizmos()
+    protected void OnDrawGizmos() //used for testing, draws the line of sight 
     {
         Gizmos.color = Color.yellow;
         UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, radius);
@@ -134,17 +139,29 @@ public class Npc : Health
             Gizmos.DrawLine(transform.position, playerRef.transform.position);
         }
     }
-    private Vector2 DirectionFromAngle(float eulerY, float angleInDegrees)
+    protected Vector2 DirectionFromAngle(float eulerY, float angleInDegrees) //converts a direction into a 2d Vector
     {
         angleInDegrees += eulerY;
 
         return new Vector2(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
     }
+    protected IEnumerator UpdateLastKnownPlayerPosition()
+    {
+        while (true)
+        {
+            //Update the last known position every second
+            if (CanSeePlayer)
+            {
+                lastKnownPlayerPosition = playerRef.transform.position; //Update position
+            }
 
+            yield return new WaitForSeconds(1f); //Wait for 1 second before updating again
+        }
+    }
 
 }
-public enum PanicMode
+public enum PanicMode //universal states for the state machine
 {
-    Calm,
-    Panic
+    Calm, //used when the npc is unaware of danger
+    Panic //used if npc is aware of danger 
 }

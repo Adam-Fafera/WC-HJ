@@ -10,46 +10,51 @@ public class EnemyAi : Npc
     [SerializeField] public GameObject patrolPointPrefab;
     [SerializeField] public float rotationSpeed = 5f;
 
-    public List<GameObject> patrolPoints = new List<GameObject>(); // Used for patrolling
-    public States currentState = States.Patrol; // Handles states
-    private int currentPointIndex = 0; // Helps iterate through the patrol points
-    
+    public List<GameObject> patrolPoints = new List<GameObject>(); //used for patrolling
+    public States currentState = States.Patrol; //handles states
+    private int currentPointIndex = 0; //used to iterate thhrough points
+
+    private Coroutine searchCoroutine; //Coroutine used to haandle searching
 
 
 
-  
+
+
+
+
     void Start()
     {
 
         navMeshAgent = GetComponent<NavMeshAgent>();
 
 
-        // Disable all automatic rotation updates
+        //disable all navmesh updates, they mess with pathfinding AI
         navMeshAgent.updateRotation = false;
         navMeshAgent.angularSpeed = 0f;
         navMeshAgent.updateUpAxis = false;
 
-        // Check if there are patrol points
+        //check for available partol points
         if (patrolPoints.Count > 0)
         {
             MoveToNextPoint();
         }
         else
         {
-            Debug.LogError("No patrol points defined.");
+            currentState = States.Idle; //If no patrol points are set automatically go into Idle
         }
 
         StartCoroutine(FOVCheck());
+        StartCoroutine(UpdateLastKnownPlayerPosition());
 
     }
 
     private void Update()
     {
-      
 
-      
 
-        // Handle state machine (can be expanded with other states like idle, chase, etc.)
+
+
+        //handles state machine
         switch (currentState)
         {
             case States.Idle:
@@ -57,18 +62,21 @@ public class EnemyAi : Npc
                 break;
 
             case States.Patrol:
-                // Move between points
                 if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f)
                 {
                     MoveToNextPoint();
                 }
                 break;
 
-                // Future states like chasing, attacking, etc.
+            case States.Searching:
+                SearchForPlayer();
+                break;
+        
+                
         }
 
-        // Rotate the character towards the direction it's moving
-        HandleRotation();
+
+        HandleRotation();//used for rotating the character manually 
     }
     
 
@@ -77,29 +85,29 @@ public class EnemyAi : Npc
     {
         navMeshAgent.isStopped = false;
 
-        // Set the destination of the NavMeshAgent to the next patrol point
+        //set destination to the next target
         navMeshAgent.SetDestination(patrolPoints[currentPointIndex].transform.position);
 
-        // Update current point index to loop through patrol points
+        //update the index
         currentPointIndex = (currentPointIndex + 1) % patrolPoints.Count;
     }
 
     
 
-    public void ChangeState(States newState) // Changes the state for the state machine
+    public void ChangeState(States newState) //function for changing states
     {
         currentState = newState;
     }
 
-    public void StartSpawning() // Used for making a list of points for the patrol route
+    public void StartSpawning() //Used for making a list of patrol points
     {
-        float currentOffset = (patrolPoints.Count + 1);
+        float currentOffset = (patrolPoints.Count + 1); //makes the patrol points spawn to the right of the enemy
         Vector3 spawnPosition = transform.position + Vector3.right * currentOffset;
-        GameObject newObject = Instantiate(patrolPointPrefab, spawnPosition, Quaternion.identity);
+        GameObject newObject = Instantiate(patrolPointPrefab, spawnPosition, Quaternion.identity); //creates a new patrol point
 
-        Transform parentTransform = transform.parent.Find("pPoints");
+        Transform parentTransform = transform.parent.Find("pPoints"); //searches for an object used to stope ppoints
 
-        if (parentTransform == null)
+        if (parentTransform == null)//if null creates it
         {
             GameObject pPoints = new GameObject("pPoints");
             pPoints.transform.SetParent(transform.parent);
@@ -108,10 +116,86 @@ public class EnemyAi : Npc
 
         newObject.transform.SetParent(parentTransform);
         patrolPoints.Add(newObject);
-        newObject.SetActive(true);
+        newObject.SetActive(true);//adds the object and sets it active
     }
-   
-    
+    public void SearchForPlayer()//used for searching for the player after losing them.
+    {
+        if (lastKnownPlayerPosition != Vector3.zero) //cheks if we have the lkpp
+        {
+            
+            if (navMeshAgent.remainingDistance < 0.5f) //if we're at the lkpp find a new one
+            {
+                if (!navMeshAgent.pathPending) 
+                {
+                    StartSearchingRandomly();
+                }
+            }
+            else
+            {
+                navMeshAgent.SetDestination(lastKnownPlayerPosition); //goes to the lkpp
+            }
+        }
+
+    }
+    private void StartSearchingRandomly()
+    {
+
+        if (searchCoroutine == null)//checks if we have a Couroutine
+        {
+            searchCoroutine = StartCoroutine(SearchCoroutine());
+        }
+    }
+
+    private IEnumerator SearchCoroutine() //Creates a new Search point for the Enemy
+    {
+        while (true)
+        {
+            
+            Vector3 randomDirection = GetRandomSearchDirection();
+            Vector3 searchPosition = lastKnownPlayerPosition + randomDirection * Random.Range(5f, 20f); //Search radius, radius in which new points will be placed
+
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(searchPosition, out hit, 1f, NavMesh.AllAreas)) //we check if the new point is on the navmesh and is a valid point for travel
+            {
+                //if it is we set it
+                searchPosition = hit.position;
+                navMeshAgent.SetDestination(searchPosition);
+                lastKnownPlayerPosition = searchPosition;//update the lkpp so the next one will be calculated from this point
+            }
+            else
+            {
+                
+                continue; //if it is invalid run the loop again
+            }
+
+            //waits until the enemy has reached the destination
+            while (navMeshAgent.pathPending || navMeshAgent.remainingDistance > 0.5f)
+            {
+                yield return null;
+            }
+
+            
+            yield return new WaitForSeconds(0); 
+        }
+    }
+
+    private Vector3 GetRandomSearchDirection() //Creates a random point in a direction that the player was last seen
+    {
+        //Calculates a vector based on the Player Position relative to the enemy
+        Vector3 directionToPlayer = lastKnownPlayerPosition - transform.position;
+        directionToPlayer.z = 0f; // 2D space
+
+        //randomize the angle so the enenmy is not going in one direction
+        float angleVariation = Random.Range(-100f, 100f);
+        Quaternion rotation = Quaternion.Euler(0f, 0f, angleVariation);
+
+        
+        Vector3 randomDirection = rotation * directionToPlayer;
+
+        return randomDirection.normalized;
+    }
+
+
 }
 
 public enum States
@@ -119,6 +203,7 @@ public enum States
     Idle,
     Patrol,
     Chasing,
-    Attacking
+    Attacking,
+    Searching
 }
 

@@ -27,6 +27,11 @@ public class EnemyAi : Npc
 
         navMeshAgent = GetComponent<NavMeshAgent>();
 
+        if (navMeshAgent == null)
+        {
+            Debug.LogError("NavMeshAgent not found on " + gameObject.name);
+        }
+        navMeshAgent.enabled = true;
 
         //disable all navmesh updates, they mess with pathfinding AI
         navMeshAgent.updateRotation = false;
@@ -148,13 +153,15 @@ public class EnemyAi : Npc
 
     private IEnumerator SearchCoroutine() //Creates a new Search point for the Enemy
     {
+        int angleIncreaser = 0;
         while (true)
         {
             
-            Vector3 randomDirection = GetRandomSearchDirection();
+            Vector3 randomDirection = GetRandomSearchDirection(angleIncreaser);
             Vector3 searchPosition = lastKnownPlayerPosition + randomDirection * Random.Range(5f, 20f); //Search radius, radius in which new points will be placed
 
             NavMeshHit hit;
+
             if (NavMesh.SamplePosition(searchPosition, out hit, 1f, NavMesh.AllAreas)) //we check if the new point is on the navmesh and is a valid point for travel
             {
                 //if it is we set it
@@ -164,7 +171,7 @@ public class EnemyAi : Npc
             }
             else
             {
-                
+                angleIncreaser++;
                 continue; //if it is invalid run the loop again
             }
 
@@ -179,14 +186,14 @@ public class EnemyAi : Npc
         }
     }
 
-    private Vector3 GetRandomSearchDirection() //Creates a random point in a direction that the player was last seen
+    private Vector3 GetRandomSearchDirection(int extraAngle) //Creates a random point in a direction that the player was last seen
     {
         //Calculates a vector based on the Player Position relative to the enemy
         Vector3 directionToPlayer = lastKnownPlayerPosition - transform.position;
         directionToPlayer.z = 0f; // 2D space
 
         //randomize the angle so the enenmy is not going in one direction
-        float angleVariation = Random.Range(-100f, 100f);
+        float angleVariation = Random.Range(-100f+20f*extraAngle, 100f+20f * extraAngle);
         Quaternion rotation = Quaternion.Euler(0f, 0f, angleVariation);
 
         

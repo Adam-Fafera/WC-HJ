@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 //will be inherited by the civilian class
 //Class used for all Npc's
-public class Npc : Health 
+public class Npc : Health
 {
 
 

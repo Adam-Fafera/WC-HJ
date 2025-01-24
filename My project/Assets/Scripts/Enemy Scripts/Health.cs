@@ -4,22 +4,23 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] protected int health;
+    [SerializeField] int health;
 
 
-    public int HealthGet 
+    public int HealthGet  
     {
         get {return health;}
         set {health = value;}
     }
 
-    public virtual void TakeDamage(int damage)
+    public virtual void TakeDamage(int damage) //used for taking damage
     {
         health -= damage;
 
         if (health <= 0)
         {
             Destroy(this.gameObject);
+            SceneHandler.Instance.DisplayEnemiesLeft();
         }
     }
 }

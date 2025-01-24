@@ -4,16 +4,9 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] protected int health;
+    [SerializeField] int health;
 
-
-    public int HealthGet 
-    {
-        get {return health;}
-        set {health = value;}
-    }
-
-    public virtual void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         health -= damage;
 

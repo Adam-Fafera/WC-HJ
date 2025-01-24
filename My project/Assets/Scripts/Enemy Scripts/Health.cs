@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] protected int health;
+    [SerializeField] int health;
 
 
     public int HealthGet  
@@ -20,6 +20,7 @@ public class Health : MonoBehaviour
         if (health <= 0)
         {
             Destroy(this.gameObject);
+            SceneHandler.Instance.DisplayEnemiesLeft();
         }
     }
 }

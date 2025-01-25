@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
+using TopDown.Movement;
 
 public class ShootingManager : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class ShootingManager : MonoBehaviour
     float cooldown;
     private float lastShotTime = 0f; // czas ostatniego bulleta
     private bool isAiming = false;
+    private Movement movement;
+
 
     private void Awake()
     {
@@ -35,6 +38,7 @@ public class ShootingManager : MonoBehaviour
     public void Start()
     {
         lastPos = this.transform.position;
+        movement = GetComponent<Movement>();
     }
 
     public void FixedUpdate()
@@ -91,6 +95,7 @@ public class ShootingManager : MonoBehaviour
                     isAiming = true;
                     leftLine.gameObject.SetActive(true);
                     rightLine.gameObject.SetActive(true);
+                    movement.MovementSpeed/=2;
                     break;
                 }
             case 5:
@@ -125,9 +130,13 @@ public class ShootingManager : MonoBehaviour
     }
     private void OnRightClickRelease()
     {
-        isAiming = false;
+        if (isAiming == true)
+        {
+            movement.MovementSpeed *= 2;
+        }
         leftLine.gameObject.SetActive(false);
         rightLine.gameObject.SetActive(false);
+        isAiming = false;
     }
     private void OnFire(InputValue value)
     {
@@ -196,22 +205,7 @@ public class ShootingManager : MonoBehaviour
 
         }
     }
-    void ShootSingle()
-    {
-        ItemManagement.Instance.UpdateAmmo(-1);
-        Instantiate(bullet, weaponPos.transform.position, Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z + Random.Range(-currentSpreadAngle, currentSpreadAngle)));
-        currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? 20 : 0;
-    }
 
-    void ShootTriple()
-    {
-        float tempRandom = Random.Range(-currentSpreadAngle, currentSpreadAngle);
-        ItemManagement.Instance.UpdateAmmo(-3);
-        Instantiate(bullet, weaponPos.transform.position, Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z+tempRandom));
-        Instantiate(bullet, weaponPos.transform.position, Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z -10 + tempRandom));
-        Instantiate(bullet, weaponPos.transform.position, Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z +10 + tempRandom));
-        currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? 40 : 0;
-    }
 
     void MeeleAttack(float meleeRange)
     {
@@ -228,23 +222,7 @@ public class ShootingManager : MonoBehaviour
             target.GetComponent<Health>().TakeDamage(meleeDamage);
         }
     }
-    IEnumerator ShootBurst(int shots, float time) //ienumerator to funkcja ktora dziala w czasie
-    {
-        for (int i = 0; i < shots; i++)
-        {
-            if (ItemManagement.Instance.currentWeapon.ammo > 0)
-            {
-                ItemManagement.Instance.UpdateAmmo(-1);
-                Instantiate(bullet, weaponPos.transform.position, Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z + Random.Range(-currentSpreadAngle, currentSpreadAngle)));
-                currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? 10 : 0;
-                yield return new WaitForSeconds(time); // ta linijka kodu to waiting room do nastepnego bulleta
-            }
-            else
-            {
-                break;
-            }
-        }
-    }
+
     void RaySingle()
     {
         LayerMask hitLayers = LayerMask.GetMask("Enemy");

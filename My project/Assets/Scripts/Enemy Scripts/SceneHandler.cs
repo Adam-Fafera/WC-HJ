@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class SceneHandler : MonoBehaviour
 {
@@ -70,4 +72,17 @@ public class SceneHandler : MonoBehaviour
 
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Player") 
+        {
+
+            new WaitForSeconds(4); // no idea why this doesnt work
+
+            SceneManager.LoadScene(2);
+        }
+
+    }
+
 }

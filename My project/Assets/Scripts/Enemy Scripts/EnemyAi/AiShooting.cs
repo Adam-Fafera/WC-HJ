@@ -3,37 +3,76 @@ using UnityEngine;
 
 public class AiShooting : MonoBehaviour
 {
-    private float shootRange;
-    [SerializeField] private Transform shootPoint;  
-    [SerializeField] private LayerMask playerLayer; 
+    [SerializeField] float aimTime;
+    [SerializeField] private float pistolSpread;
+    [SerializeField] private float shotgunSpread;
+    [SerializeField] private float rifleSpread;
+    [SerializeField] private Transform shootPoint;
+    [SerializeField] private LayerMask playerLayer;
+    [SerializeField] private LineRenderer lineRenderer;
+    [SerializeField] private SpriteRenderer weaponSprite;
 
-    private GameObject targetPlayer;            
-    private EnemyAi enemyAi;                     
-    private ItemManagement itemManager;          
-    private float shootCooldown;                 
-    private bool canShoot = true;                 
+
+    private GameObject targetPlayer;
+    private EnemyAi enemyAi;
+    private ItemManagement itemManager;
+    private float shootRange;
     private int idWeapon;
-    [SerializeField] SpriteRenderer weaponSprite;
+    private float shootCooldown;
+    private bool canShoot = true;
+    private bool isAiming = false;
+
 
     private void Start()
     {
         enemyAi = GetComponent<EnemyAi>();
         itemManager = ItemManagement.Instance;
-        idWeapon = Random.Range(1, 4);
-        if (itemManager != null)
-        {
-            Weapon currentWeapon = itemManager.weapons[idWeapon];
-            shootCooldown = itemManager.weapons[idWeapon].cooldown;
-            weaponSprite.sprite = itemManager.weapons[idWeapon].image;
-        }
+        idWeapon = Random.Range(1, 5);
         targetPlayer = GameObject.FindGameObjectWithTag("Player");
         shootRange = enemyAi.radius;
+        Weapon currentWeapon = itemManager.weapons[idWeapon];
+        shootCooldown = itemManager.weapons[idWeapon].cooldown;
+        weaponSprite.sprite = itemManager.weapons[idWeapon].image;
+
+        lineRenderer.startWidth = 0.1f;
+        switch (idWeapon)
+        {
+            case 1:
+            case 2:
+                {
+                    lineRenderer.endWidth = pistolSpread;
+                    break;
+                }
+            case 3:
+                {
+                    lineRenderer.endWidth = shotgunSpread;
+                    break;
+                }
+            case 4:
+                {
+                    lineRenderer.endWidth = rifleSpread;
+                    break;
+                }
+            default:
+                {
+                    break;
+                }
+        }
+        lineRenderer.positionCount = 2;
+        lineRenderer.enabled = false;
     }
 
     private void Update()
     {
         if (enemyAi.currentState == States.Attacking && targetPlayer != null)
         {
+            if (!isAiming)
+            {
+                Vector3 direction = (targetPlayer.transform.position - transform.position).normalized;
+                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                Quaternion lookRotation = Quaternion.Euler(0f, 0f, angle);
+                transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * enemyAi.rotationSpeed);
+            }
             AimAndShoot();
         }
     }
@@ -41,34 +80,45 @@ public class AiShooting : MonoBehaviour
     private void AimAndShoot()
     {
         float distanceToPlayer = Vector3.Distance(transform.position, targetPlayer.transform.position);
-        if (distanceToPlayer <= shootRange)
+        if (distanceToPlayer <= shootRange && canShoot)
         {
-            Vector3 direction = (targetPlayer.transform.position - shootPoint.position).normalized;
-
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            Quaternion lookRotation = Quaternion.Euler(0f, 0f, angle);
-
-            transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * enemyAi.rotationSpeed);
-
-            if (canShoot)
-            {
-                StartCoroutine(Shoot(direction));
-            }
+            StartCoroutine(AimAndShootSequence());
         }
     }
 
-    private IEnumerator Shoot(Vector3 direction)
+    private IEnumerator AimAndShootSequence()
     {
         canShoot = false;
-        RaycastHit2D hit = Physics2D.Raycast(shootPoint.position, direction, shootRange, playerLayer);
+        isAiming = true;
+
+        Vector3 direction = (targetPlayer.transform.position - shootPoint.position).normalized;
+
+        lineRenderer.enabled = true;
+
+        Vector3 lineEndPoint = shootPoint.position + direction * shootRange;
+        lineRenderer.SetPosition(0, shootPoint.position);
+        lineRenderer.SetPosition(1, lineEndPoint);
+
+        float elapsedTime = 0f;
+        while (elapsedTime < aimTime)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / aimTime;
+            Color currentColor = Color.Lerp(Color.gray, Color.black, t);
+            lineRenderer.startColor = currentColor;
+            lineRenderer.endColor = currentColor;
+            yield return null;
+        }
+
+        RaycastHit2D hit = Physics2D.Raycast(shootPoint.position, (lineEndPoint - shootPoint.position).normalized, shootRange, playerLayer);
         if (hit.collider != null && hit.collider.CompareTag("Player"))
         {
-            Debug.Log("hitlo!");
+            Debug.Log("Tu wkleic jakies game over window");
         }
-        else
-        {
-            Debug.Log("nie hitlo");
-        }
+
+        lineRenderer.enabled = false;
+        isAiming = false;
+
         yield return new WaitForSeconds(shootCooldown);
         canShoot = true;
     }

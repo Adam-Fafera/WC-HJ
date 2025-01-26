@@ -80,7 +80,6 @@ public class ShootingManager : MonoBehaviour
         {
             OnRightClickRelease();
         }
-        Debug.Log(isAiming);
     }
     private void OnRightClickPress()
     {

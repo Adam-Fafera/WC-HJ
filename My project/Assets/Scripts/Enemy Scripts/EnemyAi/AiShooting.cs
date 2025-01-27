@@ -21,6 +21,8 @@ public class AiShooting : MonoBehaviour
     private float shootCooldown;
     private bool canShoot = true;
     private bool isAiming = false;
+    public ParticleSystem bulletTrail;
+    public ParticleSystem sparks;
 
 
     private void Start()
@@ -105,6 +107,8 @@ public class AiShooting : MonoBehaviour
         }
 
         RaycastHit2D hit = Physics2D.Raycast(shootPoint.position, (lineEndPoint - shootPoint.position).normalized, shootRange, playerLayer);
+        bulletTrail.Play();
+        sparks.Play();
         if (hit.collider != null && hit.collider.CompareTag("Player"))
         {
             Debug.Log("Tu wkleic jakies game over window");

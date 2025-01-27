@@ -19,10 +19,13 @@ public class Npc : Health
     public float radius = 10; //radius of the line of sight
     public float innerRadius = 2; //radius for detecting presence when the player is extreamly close to the npc
     [Range(1, 360)] public float angle = 45; //angle of the line of sight
+    public int panicModeSpeed = 5;
+    public PanicMode panicModeState = PanicMode.Calm;
 
 
     public LayerMask targetLayer; //layer on which the player is
     public LayerMask obstructionLayer; //layer on which obstacles are
+    public LayerMask npcLayer; //used for a different implementation of panic states
 
     protected Health healthComponent;
 
@@ -188,6 +191,8 @@ public class Npc : Health
             Gizmos.DrawLine(transform.position, playerRef.transform.position);
         }
     }
+
+
     protected Vector2 DirectionFromAngle(float eulerY, float angleInDegrees) //converts a direction into a 2d Vector
     {
         angleInDegrees += eulerY;
@@ -207,6 +212,7 @@ public class Npc : Health
             yield return new WaitForSeconds(0.3f);//wait for 1 second before updating again
         }
     }
+    protected void ChangePanicModeState(PanicMode newState) => panicModeState = newState;
 
 }
 public enum PanicMode //universal states for the state machine

@@ -29,6 +29,11 @@ public class EnemyAi : Npc
         navMeshAgent = GetComponent<NavMeshAgent>();
         aiShooting = GetComponent<AiShooting>();
 
+        if (aiShooting != null )
+        {
+            Debug.Log("Nie jest nullem");
+        }
+
         if (navMeshAgent == null)
         {
             Debug.LogError("NavMeshAgent not found on " + gameObject.name);

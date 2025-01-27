@@ -39,7 +39,7 @@ public class BarrelScript : MonoBehaviour
 
                 if (interactionPointer != null)
                 {
-                    interactionPointer.SetRaycastToOnlyCarriedBarrel();
+                    //interactionPointer.SetRaycastToOnlyCarriedBarrel();
                 }
 
             }
@@ -63,8 +63,8 @@ public class BarrelScript : MonoBehaviour
 
             isCarried = false;
 
-            if (interactionPointer != null)
-                interactionPointer.RestoreOriginalRaycastLayer();
+            // if (interactionPointer != null)
+             //   interactionPointer.RestoreOriginalRaycastLayer();
         }
     }
     public bool IsBeingCarried()

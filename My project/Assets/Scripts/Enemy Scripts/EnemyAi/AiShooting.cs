@@ -62,7 +62,7 @@ public class AiShooting : MonoBehaviour
         lineRenderer.enabled = false;
     }
 
-
+    
     public void AimAndShoot()
     {
         if (!isAiming)

@@ -14,8 +14,10 @@ public class Npc : Health
 
     [SerializeField]
     public GameObject playerRef;//player ref, used to referance the Player Character
+    public bool inShootRange {  get; private set; }
     public bool CanSeePlayer { get; private set; } //bool used to check line of sight with the player 
     public float radius = 10; //radius of the line of sight
+    public float innerRadius = 2; //radius for detecting presence when the player is extreamly close to the npc
     [Range(1, 360)] public float angle = 45; //angle of the line of sight
 
 
@@ -33,6 +35,7 @@ public class Npc : Health
         {
             rb.freezeRotation = true; //freze rotation to avoid problems with navMeshAgent
         }
+       
     }
     void Start()
     {
@@ -46,8 +49,14 @@ public class Npc : Health
         navMeshAgent.updateUpAxis = false;
 
 
+
         healthComponent = GetComponent<Health>();
 
+    }
+    private void Update()
+    {
+        
+        transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
     }
 
 
@@ -67,6 +76,7 @@ public class Npc : Health
 
         if (HealthGet <= 0)
         {
+            Debug.Log("me me dead");
             Destroy(this.transform.parent.gameObject);
         }
     }
@@ -90,42 +100,80 @@ public class Npc : Health
     protected void FOV()
     {
         Collider2D[] rangeCheck = Physics2D.OverlapCircleAll(transform.position, radius, targetLayer); //colider used to see if something is within the range of vision
+        Collider2D[] innerRangeCheck = Physics2D.OverlapCircleAll(transform.position, innerRadius, targetLayer); //colider used to see if something is right beside the enemy
+        Collider2D[] shootRangeCheck = Physics2D.OverlapCircleAll(transform.position, radius/2, targetLayer); //colider used to see if something is in shooting range
 
+        //checking if the player is in our line of sight
         if (rangeCheck.Length > 0)
         {
             Transform target = rangeCheck[0].transform;
+            
+
             Vector2 directionToTarget = (target.position - transform.position).normalized;
+            
 
             if (Vector2.Angle(transform.right, directionToTarget) < angle / 2) //checks if the player is within the vision cone
             {
                 float distanceToTarget = Vector2.Distance(transform.position, target.position);
+                
 
                 if (!Physics2D.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionLayer)) //casts a raycast to the player, if it hits the player can see it
                 {
                     CanSeePlayer = true;
-                    //lastKnownPlayerPosition = target.position;
+                    if (shootRangeCheck.Length > 0)
+                    {
+                        Transform shootRangeTarget = shootRangeCheck[0].transform;
+                        Vector2 directionToShoot = (shootRangeTarget.position - transform.position).normalized;
+                        float distanceToShoot = Vector2.Distance(transform.position, shootRangeTarget.position);
+                        if (!Physics2D.Raycast(transform.position, directionToShoot, distanceToShoot, obstructionLayer))
+                        {
+                            inShootRange = true;
+                        }
+                        else
+                        {
+                            inShootRange = false;
+                        }
+                    }
+                    else
+                    {
+                        inShootRange = false;
+                    }    
                 }
                 else
                 {
                     CanSeePlayer = false;
+                    inShootRange = false;
                 }
             }
             else
             {
                 CanSeePlayer = false;
+                inShootRange = false;
             }
         }
         else if (CanSeePlayer)
         {
             CanSeePlayer = false;
+            inShootRange = false;
         }
+        //checking if the player character is right next to us
 
+        if (innerRangeCheck.Length > 0)
+        {
+            Transform innerRangeTarget = innerRangeCheck[0].transform;
+            Vector2 directionOfInnerRangeTarger = (innerRangeTarget.position - transform.position).normalized;
+            float distanceToInnerTarget = Vector2.Distance(transform.position, innerRangeTarget.position);
+            if(!Physics2D.Raycast(transform.position,directionOfInnerRangeTarger, distanceToInnerTarget, obstructionLayer))
+            { CanSeePlayer = true;}    
+        }
+              
 
     }
     protected void OnDrawGizmos() //used for testing, draws the line of sight 
     {
         Gizmos.color = Color.yellow;
         UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, radius);
+        UnityEditor.Handles.DrawWireDisc(transform.transform.position, Vector3.forward, innerRadius);
 
         Vector3 angle01 = DirectionFromAngle(-transform.eulerAngles.z + 90, -angle / 2);
         Vector3 angle02 = DirectionFromAngle(-transform.eulerAngles.z + 90, angle / 2);
@@ -156,7 +204,7 @@ public class Npc : Health
                 lastKnownPlayerPosition = playerRef.transform.position; //Update position
             }
 
-            yield return new WaitForSeconds(1f); //Wait for 1 second before updating again
+            yield return new WaitForSeconds(0.3f);//wait for 1 second before updating again
         }
     }
 

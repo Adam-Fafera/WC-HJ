@@ -12,8 +12,9 @@ public class EnemyAi : Npc
 
     public List<GameObject> patrolPoints = new List<GameObject>(); //used for patrolling
     public States currentState = States.Patrol; //handles states
+    private PanicMode currentPanicState = PanicMode.Calm;
     private int currentPointIndex = 0; //used to iterate thhrough points
-
+    
     private Coroutine searchCoroutine; //Coroutine used to haandle searching
 
     private AiShooting aiShooting;
@@ -62,19 +63,22 @@ public class EnemyAi : Npc
 
     private void Update()
     {
-        if(CanSeePlayer == true && inShootRange==true)
+        if (panicModeState == PanicMode.Panic)
         {
-            ChangeState(States.Attacking);
+            navMeshAgent.speed = panicModeSpeed;
+            if (CanSeePlayer == true && inShootRange == true)
+            {
+                ChangeState(States.Attacking);
+            }
+            else if (CanSeePlayer == true)
+            {
+                ChangeState(States.Chasing);
+            }
+            if (CanSeePlayer == false && lastKnownPlayerPosition != Vector3.zero)
+            {
+                ChangeState(States.Searching);
+            }
         }
-        else if (CanSeePlayer == true )
-        {
-            ChangeState(States.Chasing);
-        }
-        if (CanSeePlayer == false && lastKnownPlayerPosition!= Vector3.zero)
-        {
-            ChangeState(States.Searching);
-        }
-
 
 
         //handles state machine

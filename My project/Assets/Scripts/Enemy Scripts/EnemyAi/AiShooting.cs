@@ -31,7 +31,7 @@ public class AiShooting : MonoBehaviour
         itemManager = ItemManagement.Instance;
         idWeapon = Random.Range(1, 5);
         targetPlayer = GameObject.FindGameObjectWithTag("Player");
-        shootRange = enemyAi.radius/2;
+        shootRange = enemyAi.radius / 2;
         Weapon currentWeapon = itemManager.weapons[idWeapon];
         shootCooldown = itemManager.weapons[idWeapon].cooldown;
         weaponSprite.sprite = itemManager.weapons[idWeapon].image;
@@ -64,7 +64,7 @@ public class AiShooting : MonoBehaviour
         lineRenderer.enabled = false;
     }
 
-    
+
     public void AimAndShoot()
     {
         if (!isAiming)

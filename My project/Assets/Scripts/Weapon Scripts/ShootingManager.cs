@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
+using TopDown.Movement;
 
 public class ShootingManager : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class ShootingManager : MonoBehaviour
     Vector3 lastPos;
     float cooldown;
     private float lastShotTime = 0f; // czas ostatniego bulleta
+    private bool isAiming = false;
+    private Movement movement;
+
 
     private void Awake()
     {
@@ -26,38 +30,112 @@ public class ShootingManager : MonoBehaviour
     [SerializeField] private float spreadDecreaseOnNotShooting = 0.1f;
     private float currentSpreadAngle;
 
+    [SerializeField] GameObject[] Throwables;
+
     [SerializeField] private LineRenderer leftLine;
     [SerializeField] private LineRenderer rightLine;
-
-    public ParticleSystem bulletTrail;
-    public ParticleSystem sparks;
 
     public void Start()
     {
         lastPos = this.transform.position;
+        movement = GetComponent<Movement>();
     }
 
     public void FixedUpdate()
     {
         if (this.transform.position != lastPos)
         {
-            currentSpreadAngle += (currentSpreadAngle<maxSpreadAngle)?spreadIncreaseOnMovement:0;
+            currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? spreadIncreaseOnMovement : 0;
             lastPos = this.transform.position;
         }
-        else
+        else if (isAiming == true)
         {
             currentSpreadAngle -= (currentSpreadAngle > baseSpreadAngle) ? spreadDecreaseOnStay : 0;
         }
-        currentSpreadAngle -= (currentSpreadAngle > baseSpreadAngle) ? spreadDecreaseOnNotShooting : 0;
-        Vector3 leftDirection = Quaternion.Euler(0, 0, -currentSpreadAngle/2) * this.transform.up;
-        Vector3 rightDirection = Quaternion.Euler(0, 0, currentSpreadAngle/2) * this.transform.up;
+        if (isAiming == true)
+        {
+            currentSpreadAngle -= (currentSpreadAngle > baseSpreadAngle) ? spreadDecreaseOnNotShooting : 0;
+            Vector3 leftDirection = Quaternion.Euler(0, 0, -currentSpreadAngle / 2) * this.transform.up;
+            Vector3 rightDirection = Quaternion.Euler(0, 0, currentSpreadAngle / 2) * this.transform.up;
 
-        // Ustaw linie
-        leftLine.SetPosition(0, this.transform.position);
-        leftLine.SetPosition(1, this.transform.position + leftDirection * 5f); // Dlugosc linii
+            leftLine.SetPosition(0, this.transform.position);
+            leftLine.SetPosition(1, this.transform.position + leftDirection * 5f); // Dlugosc linii
 
-        rightLine.SetPosition(0, this.transform.position);
-        rightLine.SetPosition(1, this.transform.position + rightDirection * 5f);
+            rightLine.SetPosition(0, this.transform.position);
+            rightLine.SetPosition(1, this.transform.position + rightDirection * 5f);
+        }
+        else
+        {
+
+        }
+
+    }
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            OnRightClickPress();
+        }
+        if (Input.GetKeyUp(KeyCode.Mouse1))
+        {
+            OnRightClickRelease();
+        }
+    }
+    private void OnRightClickPress()
+    {
+        switch (ItemManagement.Instance.GetCurrentIndex())
+        {
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+                {
+                    isAiming = true;
+                    leftLine.gameObject.SetActive(true);
+                    rightLine.gameObject.SetActive(true);
+                    movement.MovementSpeed /= 2;
+                    break;
+                }
+            case 5:
+                {
+                    Instantiate(Throwables[0], weaponPos.transform.position, this.transform.rotation);
+                    ItemManagement.Instance.SetCurrentWeapon(0);
+                    break;
+                }
+            case 6:
+                {
+                    Instantiate(Throwables[1], weaponPos.transform.position, this.transform.rotation);
+                    ItemManagement.Instance.SetCurrentWeapon(0);
+                    break;
+                }
+            case 7:
+                {
+                    Instantiate(Throwables[2], weaponPos.transform.position, this.transform.rotation);
+                    ItemManagement.Instance.SetCurrentWeapon(0);
+                    break;
+                }
+            case 8:
+                {
+                    Instantiate(Throwables[3], weaponPos.transform.position, this.transform.rotation);
+                    ItemManagement.Instance.SetCurrentWeapon(0);
+                    break;
+                }
+            default:
+                {
+                    break;
+                }
+        }
+    }
+    private void OnRightClickRelease()
+    {
+        if (isAiming == true)
+        {
+            movement.MovementSpeed *= 2;
+        }
+        leftLine.gameObject.SetActive(false);
+        rightLine.gameObject.SetActive(false);
+        isAiming = false;
     }
     private void OnFire(InputValue value)
     {
@@ -75,22 +153,22 @@ public class ShootingManager : MonoBehaviour
                     }
                 case 1:
                     {
-                        RaySingle();
+                        if (isAiming == true) RaySingle();
                         break;
                     }
                 case 2:
                     {
-                        RaySingle();
+                        if (isAiming == true) RaySingle();
                         break;
                     }
                 case 3:
                     {
-                        RayTriple();
+                        if (isAiming == true) RayTriple();
                         break;
                     }
                 case 4:
                     {
-                        StartCoroutine(RayBurst(3, 0.1f));
+                        if (isAiming == true) StartCoroutine(RayBurst(3, 0.1f));
                         break;
                     }
                 case 5:
@@ -112,12 +190,10 @@ public class ShootingManager : MonoBehaviour
                     {
                         break;
                     }
-
-            }
-
-            if (audioSource != null && weaponSounds[currentWeaponIndex] != null)
-            {
-                audioSource.PlayOneShot(weaponSounds[currentWeaponIndex]); // Odtwarzaj d�wi�k odpowiadaj�cy indeksowi broni
+                default:
+                    {
+                        break;
+                    }
             }
 
             if (audioSource != null && weaponSounds[currentWeaponIndex] != null)
@@ -128,26 +204,7 @@ public class ShootingManager : MonoBehaviour
 
         }
     }
-    void ShootSingle()
-    {
-        ItemManagement.Instance.UpdateAmmo(-1);
-        Instantiate(bullet, weaponPos.transform.position, Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z + Random.Range(-currentSpreadAngle, currentSpreadAngle)));
-        currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? 20 : 0;
-        bulletTrail.Play();
-        sparks.Play();
-    }
 
-    void ShootTriple()
-    {
-        float tempRandom = Random.Range(-currentSpreadAngle, currentSpreadAngle);
-        ItemManagement.Instance.UpdateAmmo(-3);
-        Instantiate(bullet, weaponPos.transform.position, Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z+tempRandom));
-        Instantiate(bullet, weaponPos.transform.position, Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z -10 + tempRandom));
-        Instantiate(bullet, weaponPos.transform.position, Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z +10 + tempRandom));
-        currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? 40 : 0;
-        bulletTrail.Play();
-        sparks.Play();
-    }
 
     void MeeleAttack(float meleeRange)
     {
@@ -164,25 +221,7 @@ public class ShootingManager : MonoBehaviour
             target.GetComponent<Health>().TakeDamage(meleeDamage);
         }
     }
-    IEnumerator ShootBurst(int shots, float time) //ienumerator to funkcja ktora dziala w czasie
-    {
-        for (int i = 0; i < shots; i++)
-        {
-            if (ItemManagement.Instance.currentWeapon.ammo > 0)
-            {
-                ItemManagement.Instance.UpdateAmmo(-1);
-                Instantiate(bullet, weaponPos.transform.position, Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z + Random.Range(-currentSpreadAngle, currentSpreadAngle)));
-                currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? 10 : 0;
-                yield return new WaitForSeconds(time); // ta linijka kodu to waiting room do nastepnego bulleta
-                bulletTrail.Play();
-                sparks.Play();
-            }
-            else
-            {
-                break;
-            }
-        }
-    }
+
     void RaySingle()
     {
         LayerMask hitLayers = LayerMask.GetMask("Enemy");
@@ -198,8 +237,6 @@ public class ShootingManager : MonoBehaviour
 
         ItemManagement.Instance.UpdateAmmo(-1);
         currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? 20 : 0;
-        bulletTrail.Play();
-        sparks.Play();
     }
 
     void RayTriple()
@@ -235,8 +272,6 @@ public class ShootingManager : MonoBehaviour
 
         ItemManagement.Instance.UpdateAmmo(-3);
         currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? 40 : 0;
-        bulletTrail.Play();
-        sparks.Play();
     }
 
     IEnumerator RayBurst(int shots, float time)
@@ -250,8 +285,6 @@ public class ShootingManager : MonoBehaviour
             {
                 Vector2 direction = Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z + Random.Range(-currentSpreadAngle, currentSpreadAngle)) * Vector2.up;
                 RaycastHit2D hit = Physics2D.Raycast(this.transform.position, direction, 100f, hitLayers);
-                bulletTrail.Play();
-                sparks.Play();
 
                 if (hit.collider != null)
                 {

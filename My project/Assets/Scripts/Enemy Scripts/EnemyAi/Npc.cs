@@ -80,6 +80,7 @@ public class Npc : Health
         if (HealthGet <= 0)
         {
             Debug.Log("me me dead");
+            SceneHandler.Instance.DisplayEnemiesLeft();
             Destroy(this.transform.parent.gameObject);
         }
     }

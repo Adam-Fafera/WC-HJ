@@ -105,6 +105,16 @@ public class ShootingManager : MonoBehaviour
                         audioSource.PlayOneShot(weaponSounds[currentWeaponIndex]);
                         break;
                     }
+                case 8:
+                    {
+                        break;
+                    }
+
+            }
+
+            if (audioSource != null && weaponSounds[currentWeaponIndex] != null)
+            {
+                audioSource.PlayOneShot(weaponSounds[currentWeaponIndex]); // Odtwarzaj d�wi�k odpowiadaj�cy indeksowi broni
             }
 
             if (audioSource != null && weaponSounds[currentWeaponIndex] != null)

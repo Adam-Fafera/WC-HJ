@@ -26,8 +26,9 @@ public class Bullet : MonoBehaviour //bullet should inherit it's damage value fr
         if (collider.gameObject.tag=="Enemy")
         {
             collider.gameObject.GetComponent<Health>().TakeDamage(bulletDamage);
+            Destroy(this.gameObject);
         }
-        if (collider.gameObject.tag != "Projectile")
+        else if (collider.gameObject.tag == "Obstruction")
         {
             Destroy(this.gameObject);
         }

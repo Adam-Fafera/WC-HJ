@@ -12,10 +12,10 @@ public class SceneHandler : MonoBehaviour
     public int enemyCount;
     public byte alpha;
     [SerializeField] TMP_Text enemiesLeftText;
-    [SerializeField] GameObject endScreen;
+    //[SerializeField] GameObject endScreen;
 
     float timer;
-    [SerializeField] TMP_Text completionTime;
+    //[SerializeField] TMP_Text completionTime;
 
     private void Awake()
     {
@@ -39,9 +39,12 @@ public class SceneHandler : MonoBehaviour
         enemyCount -= 1;
         if (enemyCount == 0)
         {
-            completionTime.text = (Mathf.Round(timer*10)/10).ToString()+" seconds";
-            enemiesLeftText.gameObject.SetActive(false);
-            endScreen.SetActive(true);
+            //completionTime.text = (Mathf.Round(timer*10)/10).ToString()+" seconds";
+            //enemiesLeftText.gameObject.SetActive(false);
+            //endScreen.SetActive(true);
+            alpha = 255;
+            enemiesLeftText.text ="Head to elevator ;)";
+            InvokeRepeating("TextFade", 0f, 0.1f);
         }
         else if (enemyCount == 1)
         {

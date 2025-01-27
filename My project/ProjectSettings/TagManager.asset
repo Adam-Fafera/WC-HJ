@@ -15,6 +15,7 @@ TagManager:
   - 6
   - 7
   - Barrel
+  - 8
   layers:
   - Default
   - TransparentFX

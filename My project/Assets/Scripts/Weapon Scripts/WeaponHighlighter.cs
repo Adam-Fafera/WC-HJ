@@ -7,11 +7,9 @@ public class InteractionPointer : MonoBehaviour
 {
     public float maxDistance = 5f; // Maksymalna odleg³oœæ Raycast
     public LayerMask interactableLayer; // Warstwa, któr¹ Raycast wykryje
+    public LayerMask originalInteractableLayer;
     private GameObject highlightedItem; // Obiekt aktualnie podœwietlony
-    private int itemId;
     private bool pickable;
-    [SerializeField] private float x=1f;
-    [SerializeField] private float y=1f;
 
 
     void Update()
@@ -19,7 +17,7 @@ public class InteractionPointer : MonoBehaviour
         Vector2 playerPosition = transform.position;
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = (mousePosition - playerPosition).normalized;
-        
+
 
         RaycastHit2D hit = Physics2D.Raycast(playerPosition, direction, maxDistance, interactableLayer);
 
@@ -33,10 +31,9 @@ public class InteractionPointer : MonoBehaviour
 
                 }
                 highlightedItem = hit.collider.gameObject;
-                itemId = int.Parse(highlightedItem.gameObject.tag);
                 ApplyHighlight(highlightedItem);
                 pickable = true;
-                
+
             }
         }
         else
@@ -48,20 +45,37 @@ public class InteractionPointer : MonoBehaviour
                 pickable = false;
             }
         }
-        if (Input.GetKey(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            if (pickable == true)
+            if (highlightedItem != null && pickable)
             {
-                ItemManagement.Instance.SetCurrentWeapon(itemId); // zmiana itemu (funkcja) w itemManagement
+                if (highlightedItem.CompareTag("Barrel"))
+                {
+                    BarrelScript barrel = highlightedItem.GetComponent<BarrelScript>();
+                    if (barrel != null)
+                    {
+                        barrel.TogglePickup();
+                    }
+                }
+                else
+                {
+                    int weaponId;
+                    if (int.TryParse(highlightedItem.tag, out weaponId))
+                    {
+                        ItemManagement.Instance.SetCurrentWeapon(weaponId);
+                    }
+
+                }
             }
         }
+    }
 
 
-        void ApplyHighlight(GameObject item)
+    void ApplyHighlight(GameObject item)
         {
             GameObject outline = new GameObject("Outline");
             outline.transform.position = item.transform.position;
-            outline.transform.localScale = new Vector3(1.1f*x, 1.2f*y, 1f); // Skalowanie konturu
+            outline.transform.localScale = new Vector3(1.1f, 1.2f, 1f); // Skalowanie konturu
             outline.transform.SetParent(item.transform); // Ustaw kontur jako dziecko obiektu
 
             SpriteRenderer itemRenderer = item.GetComponent<SpriteRenderer>();
@@ -88,5 +102,25 @@ public class InteractionPointer : MonoBehaviour
                 Destroy(outline.gameObject);
             }
         }
+    public void SetRaycastToOnlyCarriedBarrel()
+    {
+        // Zapisz ID warstwy:
+        int carriedBarrelLayer = LayerMask.NameToLayer("Barrel");
+        // Jezli warstwa istnieje (>= 0)
+        if (carriedBarrelLayer >= 0)
+        {
+            // Maska = 1 << carriedBarrelLayer
+            LayerMask onlyCarriedMask = 1 << carriedBarrelLayer;
+            interactableLayer = onlyCarriedMask;
+        }
+        ResetHighlight(highlightedItem);
     }
+
+
+    public void RestoreOriginalRaycastLayer()
+    {
+        interactableLayer = originalInteractableLayer;
+    }
+
 }
+

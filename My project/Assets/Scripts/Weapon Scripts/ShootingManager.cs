@@ -29,6 +29,9 @@ public class ShootingManager : MonoBehaviour
     [SerializeField] private LineRenderer leftLine;
     [SerializeField] private LineRenderer rightLine;
 
+    public ParticleSystem bulletTrail;
+    public ParticleSystem sparks;
+
     public void Start()
     {
         lastPos = this.transform.position;
@@ -130,6 +133,8 @@ public class ShootingManager : MonoBehaviour
         ItemManagement.Instance.UpdateAmmo(-1);
         Instantiate(bullet, weaponPos.transform.position, Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z + Random.Range(-currentSpreadAngle, currentSpreadAngle)));
         currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? 20 : 0;
+        bulletTrail.Play();
+        sparks.Play();
     }
 
     void ShootTriple()
@@ -140,6 +145,8 @@ public class ShootingManager : MonoBehaviour
         Instantiate(bullet, weaponPos.transform.position, Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z -10 + tempRandom));
         Instantiate(bullet, weaponPos.transform.position, Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z +10 + tempRandom));
         currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? 40 : 0;
+        bulletTrail.Play();
+        sparks.Play();
     }
 
     void MeeleAttack(float meleeRange)
@@ -167,6 +174,8 @@ public class ShootingManager : MonoBehaviour
                 Instantiate(bullet, weaponPos.transform.position, Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z + Random.Range(-currentSpreadAngle, currentSpreadAngle)));
                 currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? 10 : 0;
                 yield return new WaitForSeconds(time); // ta linijka kodu to waiting room do nastepnego bulleta
+                bulletTrail.Play();
+                sparks.Play();
             }
             else
             {
@@ -189,6 +198,8 @@ public class ShootingManager : MonoBehaviour
 
         ItemManagement.Instance.UpdateAmmo(-1);
         currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? 20 : 0;
+        bulletTrail.Play();
+        sparks.Play();
     }
 
     void RayTriple()
@@ -224,6 +235,8 @@ public class ShootingManager : MonoBehaviour
 
         ItemManagement.Instance.UpdateAmmo(-3);
         currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? 40 : 0;
+        bulletTrail.Play();
+        sparks.Play();
     }
 
     IEnumerator RayBurst(int shots, float time)
@@ -237,6 +250,8 @@ public class ShootingManager : MonoBehaviour
             {
                 Vector2 direction = Quaternion.Euler(0, 0, this.transform.rotation.eulerAngles.z + Random.Range(-currentSpreadAngle, currentSpreadAngle)) * Vector2.up;
                 RaycastHit2D hit = Physics2D.Raycast(this.transform.position, direction, 100f, hitLayers);
+                bulletTrail.Play();
+                sparks.Play();
 
                 if (hit.collider != null)
                 {

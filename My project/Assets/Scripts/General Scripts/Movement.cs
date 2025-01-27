@@ -50,6 +50,11 @@ namespace TopDown.Movement
                 }
             }
         }
+        public float MovementSpeed
+        {
+            get => movementSpeed;
+            set => movementSpeed = value;
+        }
     }
 
 }

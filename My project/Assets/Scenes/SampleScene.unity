@@ -1326,10 +1326,15 @@ MonoBehaviour:
   bullet: {fileID: 4218234944498687037, guid: 1c0a20b66288da348a138cb5de3eb97c, type: 3}
   weaponPos: {fileID: 1089151698}
   baseSpreadAngle: 0
-  maxSpreadAngle: 60
-  spreadIncreaseOnMovement: 0.5
-  spreadDecreaseOnStay: 0.1
-  spreadDecreaseOnNotShooting: 0.1
+  maxSpreadAngle: 70
+  spreadIncreaseOnMovement: 0.4
+  spreadDecreaseOnStay: 0.8
+  spreadDecreaseOnNotShooting: 0.2
+  Throwables:
+  - {fileID: 841864081895352499, guid: 3c815b373013acd4c9f87b2b5691f494, type: 3}
+  - {fileID: 836399580522610399, guid: 8eb850a2e23303a4eadd58ca6f68d1f5, type: 3}
+  - {fileID: 6726806566900316192, guid: bb636816801dc3d4e81dc9d54094c3bf, type: 3}
+  - {fileID: 841864081895352499, guid: 6c9f64ef58f414c45b30d88e62b91ef8, type: 3}
   leftLine: {fileID: 1014686321}
   rightLine: {fileID: 730638950}
 --- !u!114 &591723730

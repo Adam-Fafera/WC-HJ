@@ -45,10 +45,10 @@ public class ShootingManager : MonoBehaviour
     {
         if (this.transform.position != lastPos)
         {
-            currentSpreadAngle += (currentSpreadAngle<maxSpreadAngle)?spreadIncreaseOnMovement:0;
+            currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? spreadIncreaseOnMovement : 0;
             lastPos = this.transform.position;
         }
-        else if(isAiming==true)
+        else if (isAiming == true)
         {
             currentSpreadAngle -= (currentSpreadAngle > baseSpreadAngle) ? spreadDecreaseOnStay : 0;
         }
@@ -94,7 +94,7 @@ public class ShootingManager : MonoBehaviour
                     isAiming = true;
                     leftLine.gameObject.SetActive(true);
                     rightLine.gameObject.SetActive(true);
-                    movement.MovementSpeed/=2;
+                    movement.MovementSpeed /= 2;
                     break;
                 }
             case 5:
@@ -153,7 +153,7 @@ public class ShootingManager : MonoBehaviour
                     }
                 case 1:
                     {
-                        if(isAiming == true) RaySingle();
+                        if (isAiming == true) RaySingle();
                         break;
                     }
                 case 2:

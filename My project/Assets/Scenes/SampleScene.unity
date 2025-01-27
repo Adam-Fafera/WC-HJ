@@ -1403,7 +1403,7 @@ MonoBehaviour:
   maxDistance: 5
   interactableLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   x: 1
   y: 1
 --- !u!208 &591723734
@@ -1997,7 +1997,7 @@ GameObject:
   - component: {fileID: 863898111}
   - component: {fileID: 863898110}
   - component: {fileID: 863898109}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Shotgun
   m_TagString: 3
   m_Icon: {fileID: 0}
@@ -2126,7 +2126,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2110967762}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &871413108
 GameObject:
@@ -2290,7 +2290,7 @@ GameObject:
   - component: {fileID: 907346347}
   - component: {fileID: 907346346}
   - component: {fileID: 907346345}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mop
   m_TagString: 6
   m_Icon: {fileID: 0}
@@ -2419,7 +2419,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2110967762}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &917080881
 GameObject:
@@ -2433,7 +2433,7 @@ GameObject:
   - component: {fileID: 917080883}
   - component: {fileID: 917080882}
   - component: {fileID: 917080885}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pistol
   m_TagString: 1
   m_Icon: {fileID: 0}
@@ -2550,7 +2550,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2110967762}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &917080885
 MonoBehaviour:
@@ -3082,7 +3082,7 @@ GameObject:
   - component: {fileID: 1132644763}
   - component: {fileID: 1132644762}
   - component: {fileID: 1132644761}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Rifle
   m_TagString: 4
   m_Icon: {fileID: 0}
@@ -3211,7 +3211,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2110967762}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1164408782
 GameObject:
@@ -7218,7 +7218,7 @@ GameObject:
   - component: {fileID: 1828617762}
   - component: {fileID: 1828617761}
   - component: {fileID: 1828617760}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Katana
   m_TagString: 7
   m_Icon: {fileID: 0}
@@ -7347,7 +7347,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2110967762}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2052339552
 GameObject:
@@ -7392,7 +7392,7 @@ GameObject:
   - component: {fileID: 2068094105}
   - component: {fileID: 2068094104}
   - component: {fileID: 2068094103}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Extinguisher
   m_TagString: 5
   m_Icon: {fileID: 0}
@@ -7521,7 +7521,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2110967762}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2079735424
 GameObject:
@@ -8568,7 +8568,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2110967762}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: -----------------WEAPONS-----------------
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8587,7 +8587,14 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 917080884}
+  - {fileID: 2127439083}
+  - {fileID: 863898112}
+  - {fileID: 1132644764}
+  - {fileID: 2068094106}
+  - {fileID: 907346348}
+  - {fileID: 1828617763}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2127439079
@@ -8602,7 +8609,7 @@ GameObject:
   - component: {fileID: 2127439082}
   - component: {fileID: 2127439081}
   - component: {fileID: 2127439080}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Usp
   m_TagString: 2
   m_Icon: {fileID: 0}
@@ -8731,7 +8738,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2110967762}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3211045753995933323
 PrefabInstance:
@@ -8857,13 +8864,6 @@ SceneRoots:
   - {fileID: 556488295}
   - {fileID: 1644910233}
   - {fileID: 2110967762}
-  - {fileID: 917080884}
-  - {fileID: 2127439083}
-  - {fileID: 863898112}
-  - {fileID: 1132644764}
-  - {fileID: 2068094106}
-  - {fileID: 907346348}
-  - {fileID: 1828617763}
   - {fileID: 687414714}
   - {fileID: 1478558200}
   - {fileID: 862724511}

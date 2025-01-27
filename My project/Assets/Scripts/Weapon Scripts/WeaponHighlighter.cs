@@ -5,10 +5,10 @@ using static UnityEditor.Progress;
 
 public class InteractionPointer : MonoBehaviour
 {
-    public float maxDistance = 5f; // Maksymalna odleg³oœæ Raycast
-    public LayerMask interactableLayer; // Warstwa, któr¹ Raycast wykryje
+    public float maxDistance = 5f; // Maksymalna odlegï¿½oï¿½ï¿½ Raycast
+    public LayerMask interactableLayer; // Warstwa, ktï¿½rï¿½ Raycast wykryje
     public LayerMask originalInteractableLayer;
-    private GameObject highlightedItem; // Obiekt aktualnie podœwietlony
+    private GameObject highlightedItem; // Obiekt aktualnie podï¿½wietlony
     private int itemId;
     private bool pickable;
 
@@ -24,28 +24,29 @@ public class InteractionPointer : MonoBehaviour
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = (mousePosition - playerPosition).normalized;
 
-        // Wysy³amy Raycast od gracza w kierunku kursora, do maksymalnej odleg³oœci i na warstwie interactableLayer
+        // Wysyï¿½amy Raycast od gracza w kierunku kursora, do maksymalnej odlegï¿½oï¿½ci i na warstwie interactableLayer
         RaycastHit2D hit = Physics2D.Raycast(playerPosition, direction, maxDistance, interactableLayer);
 
         if (hit.collider != null)
         {
-            // Je¿eli trafiliœmy w inny obiekt ni¿ poprzednio, zresetuj podœwietlenie starego
+            // Jeï¿½eli trafiliï¿½my w inny obiekt niï¿½ poprzednio, zresetuj podï¿½wietlenie starego
             if (highlightedItem != hit.collider.gameObject)
             {
                 if (highlightedItem != null)
                 {
                     ResetHighlight(highlightedItem);
-                }
-                // Ustawiamy nowy obiekt jako podœwietlony
-                highlightedItem = hit.collider.gameObject;
-                pickable = true;
 
+                }
+                highlightedItem = hit.collider.gameObject;
+                itemId = int.Parse(highlightedItem.gameObject.tag);
                 ApplyHighlight(highlightedItem);
+                pickable = true;
+                
             }
         }
         else
         {
-            // Je¿eli Raycast nic nie trafi³, a coœ wczeœniej by³o podœwietlone, resetujemy
+            // Jeï¿½eli Raycast nic nie trafiï¿½, a coï¿½ wczeï¿½niej byï¿½o podï¿½wietlone, resetujemy
             if (highlightedItem != null)
             {
                 ResetHighlight(highlightedItem);
@@ -58,7 +59,7 @@ public class InteractionPointer : MonoBehaviour
         {
             if (highlightedItem != null && pickable)
             {
-                // Rozró¿niamy obiekt po tagu
+                // Rozrï¿½niamy obiekt po tagu
                 if (highlightedItem.CompareTag("Barrel"))
                 {
                     BarrelScript barrel = highlightedItem.GetComponent<BarrelScript>();
@@ -80,7 +81,7 @@ public class InteractionPointer : MonoBehaviour
         }
     }
 
-    // Tworzy obiekt "Outline" jako dziecko obiektu, który chcemy podœwietliæ
+    // Tworzy obiekt "Outline" jako dziecko obiektu, ktï¿½ry chcemy podï¿½wietliï¿½
     void ApplyHighlight(GameObject item)
     {
         GameObject outline = new GameObject("Outline");
@@ -92,17 +93,17 @@ public class InteractionPointer : MonoBehaviour
         if (itemRenderer != null)
         {
             SpriteRenderer outlineRenderer = outline.AddComponent<SpriteRenderer>();
-            outlineRenderer.sprite = itemRenderer.sprite; // U¿ycie tego samego sprite'a
+            outlineRenderer.sprite = itemRenderer.sprite; // Uï¿½ycie tego samego sprite'a
 
             Material outlineMaterial = Resources.Load<Material>("WhiteOutlineMaterial");
             if (outlineMaterial != null)
             {
-                outlineMaterial.SetColor("_EmissionColor", Color.white * 2); // Zwiêkszona jasnoœæ
+                outlineMaterial.SetColor("_EmissionColor", Color.white * 2); // Zwiï¿½kszona jasnoï¿½ï¿½
                 outlineRenderer.material = outlineMaterial;
             }
             else
             {
-                Debug.LogWarning("Nie znaleziono materia³u 'WhiteOutlineMaterial' w Resources!");
+                Debug.LogWarning("Nie znaleziono materiaï¿½u 'WhiteOutlineMaterial' w Resources!");
             }
 
             outlineRenderer.sortingOrder = itemRenderer.sortingOrder - 1;
@@ -122,7 +123,7 @@ public class InteractionPointer : MonoBehaviour
     {
         // Zapisz ID warstwy:
         int carriedBarrelLayer = LayerMask.NameToLayer("Barrel");
-        // Jeœli warstwa istnieje (>= 0)
+        // Jeï¿½li warstwa istnieje (>= 0)
         if (carriedBarrelLayer >= 0)
         {
             // Maska = 1 << carriedBarrelLayer

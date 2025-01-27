@@ -5,11 +5,10 @@ using static UnityEditor.Progress;
 
 public class InteractionPointer : MonoBehaviour
 {
-    public float maxDistance = 5f; // Maksymalna odleg�o�� Raycast
-    public LayerMask interactableLayer; // Warstwa, kt�r� Raycast wykryje
+    public float maxDistance = 5f; // Maksymalna odleglosc Raycast
+    public LayerMask interactableLayer; // Warstwa, ktora Raycast wykryje
     public LayerMask originalInteractableLayer;
-    private GameObject highlightedItem; // Obiekt aktualnie pod�wietlony
-    private int itemId;
+    private GameObject highlightedItem; // Obiekt aktualnie podswietlony
     private bool pickable;
 
     private void Awake()
@@ -24,12 +23,13 @@ public class InteractionPointer : MonoBehaviour
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = (mousePosition - playerPosition).normalized;
 
-        // Wysy�amy Raycast od gracza w kierunku kursora, do maksymalnej odleg�o�ci i na warstwie interactableLayer
+        // Wysylamy Raycast od gracza w kierunku kursora, do maksymalnej odleg�o�ci i na warstwie interactableLayer
         RaycastHit2D hit = Physics2D.Raycast(playerPosition, direction, maxDistance, interactableLayer);
+        
 
         if (hit.collider != null)
         {
-            // Je�eli trafili�my w inny obiekt ni� poprzednio, zresetuj pod�wietlenie starego
+            // Jezeli trafiliamy w inny obiekt niz poprzednio, zresetuj podswietlenie starego
             if (highlightedItem != hit.collider.gameObject)
             {
                 if (highlightedItem != null)
@@ -38,7 +38,6 @@ public class InteractionPointer : MonoBehaviour
 
                 }
                 highlightedItem = hit.collider.gameObject;
-                itemId = int.Parse(highlightedItem.gameObject.tag);
                 ApplyHighlight(highlightedItem);
                 pickable = true;
                 
@@ -46,7 +45,7 @@ public class InteractionPointer : MonoBehaviour
         }
         else
         {
-            // Je�eli Raycast nic nie trafi�, a co� wcze�niej by�o pod�wietlone, resetujemy
+            // Jezeli Raycast nic nie trafi, a cos wczesniej bylo podswietlone, resetujemy
             if (highlightedItem != null)
             {
                 ResetHighlight(highlightedItem);
@@ -59,7 +58,6 @@ public class InteractionPointer : MonoBehaviour
         {
             if (highlightedItem != null && pickable)
             {
-                // Rozr�niamy obiekt po tagu
                 if (highlightedItem.CompareTag("Barrel"))
                 {
                     BarrelScript barrel = highlightedItem.GetComponent<BarrelScript>();
@@ -70,6 +68,14 @@ public class InteractionPointer : MonoBehaviour
                 }
                 else
                 {
+                    if (hit.collider != null)
+                    {
+                        Debug.Log($"Hit Object: {hit.collider.gameObject.name}, Layer: {LayerMask.LayerToName(hit.collider.gameObject.layer)}");
+                    }
+                    else
+                    {
+                        Debug.Log("Raycast did not hit any object.");
+                    }
                     int weaponId;
                     if (int.TryParse(highlightedItem.tag, out weaponId))
                     {
@@ -81,7 +87,7 @@ public class InteractionPointer : MonoBehaviour
         }
     }
 
-    // Tworzy obiekt "Outline" jako dziecko obiektu, kt�ry chcemy pod�wietli�
+    // Tworzy obiekt "Outline" jako dziecko obiektu, ktory chcemy podswietlic
     void ApplyHighlight(GameObject item)
     {
         GameObject outline = new GameObject("Outline");
@@ -93,12 +99,12 @@ public class InteractionPointer : MonoBehaviour
         if (itemRenderer != null)
         {
             SpriteRenderer outlineRenderer = outline.AddComponent<SpriteRenderer>();
-            outlineRenderer.sprite = itemRenderer.sprite; // U�ycie tego samego sprite'a
+            outlineRenderer.sprite = itemRenderer.sprite; // Uzycie tego samego sprite'a
 
             Material outlineMaterial = Resources.Load<Material>("WhiteOutlineMaterial");
             if (outlineMaterial != null)
             {
-                outlineMaterial.SetColor("_EmissionColor", Color.white * 2); // Zwi�kszona jasno��
+                outlineMaterial.SetColor("_EmissionColor", Color.white * 2); // Zwiekszona jasnosc
                 outlineRenderer.material = outlineMaterial;
             }
             else
@@ -123,7 +129,7 @@ public class InteractionPointer : MonoBehaviour
     {
         // Zapisz ID warstwy:
         int carriedBarrelLayer = LayerMask.NameToLayer("Barrel");
-        // Je�li warstwa istnieje (>= 0)
+        // Jesli warstwa istnieje (>= 0)
         if (carriedBarrelLayer >= 0)
         {
             // Maska = 1 << carriedBarrelLayer

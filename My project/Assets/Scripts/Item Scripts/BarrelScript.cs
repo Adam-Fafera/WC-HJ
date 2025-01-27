@@ -7,9 +7,9 @@ public class BarrelScript : MonoBehaviour
     [Header("Ustawienia podnoszenia")]
     [SerializeField] private Transform player;         // Referencja do obiektu gracza
     [SerializeField] private Transform holdPoint;      // Punkt, w którym chcemy "trzymaæ" beczkê
-    [SerializeField] private float pickUpRange = 6f;   // Zasiêg podnoszenia
+    [SerializeField] private float pickUpRange;  // Zasiêg podnoszenia
 
-    private bool isCarried = false;
+    private bool isCarried;
     private int previousWeaponIndex = -1;
     private int originalLayer;
     [SerializeField] private InteractionPointer interactionPointer;
@@ -17,12 +17,14 @@ public class BarrelScript : MonoBehaviour
     private void Awake()
     {
         originalLayer = gameObject.layer;
+        isCarried = false;
     }
     public void TogglePickup()
     {
         if (!isCarried)
         {
             float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+            Debug.Log(distanceToPlayer);
             if (distanceToPlayer <= pickUpRange)
             {
                 previousWeaponIndex = ItemManagement.Instance.GetCurrentIndex();
@@ -31,16 +33,12 @@ public class BarrelScript : MonoBehaviour
 
                 transform.SetParent(holdPoint);
                 transform.localPosition = Vector3.zero;
-                transform.localRotation = Quaternion.identity;
-
-                isCarried = true;
+                transform.localRotation = Quaternion.identity;               
 
                 gameObject.layer = LayerMask.NameToLayer("Barrel");
-
-                if (interactionPointer != null)
-                {
-                    interactionPointer.SetRaycastToOnlyCarriedBarrel();
-                }
+                
+                interactionPointer.SetRaycastToOnlyCarriedBarrel();
+                isCarried = true;
 
             }
             else
@@ -63,8 +61,8 @@ public class BarrelScript : MonoBehaviour
 
             isCarried = false;
 
-            if (interactionPointer != null)
-                interactionPointer.RestoreOriginalRaycastLayer();
+
+            interactionPointer.RestoreOriginalRaycastLayer();
         }
     }
     public bool IsBeingCarried()

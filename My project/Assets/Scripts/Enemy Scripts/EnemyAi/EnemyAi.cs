@@ -16,6 +16,7 @@ public class EnemyAi : Npc
 
     private Coroutine searchCoroutine; //Coroutine used to haandle searching
 
+    private AiShooting aiShooting;
 
 
 
@@ -26,6 +27,7 @@ public class EnemyAi : Npc
     {
 
         navMeshAgent = GetComponent<NavMeshAgent>();
+        aiShooting = GetComponent<AiShooting>();
 
         if (navMeshAgent == null)
         {
@@ -55,7 +57,18 @@ public class EnemyAi : Npc
 
     private void Update()
     {
-
+        if(CanSeePlayer == true && inShootRange==true)
+        {
+            ChangeState(States.Attacking);
+        }
+        else if (CanSeePlayer == true )
+        {
+            ChangeState(States.Chasing);
+        }
+        if (CanSeePlayer == false && lastKnownPlayerPosition!= Vector3.zero)
+        {
+            ChangeState(States.Searching);
+        }
 
 
 
@@ -67,6 +80,7 @@ public class EnemyAi : Npc
                 break;
 
             case States.Patrol:
+                navMeshAgent.isStopped = false;
                 if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f)
                 {
                     MoveToNextPoint();
@@ -74,7 +88,19 @@ public class EnemyAi : Npc
                 break;
 
             case States.Searching:
+                navMeshAgent.isStopped = false;
                 SearchForPlayer();
+                break;
+
+            case States.Attacking:
+                navMeshAgent.isStopped = true;
+                aiShooting.AimAndShoot();
+                break;
+
+
+            case States.Chasing:
+                navMeshAgent.isStopped = false;
+                ChasePlayer();
                 break;
         
                 
@@ -202,8 +228,13 @@ public class EnemyAi : Npc
         return randomDirection.normalized;
     }
 
-
+    private void ChasePlayer()
+    {
+        navMeshAgent.SetDestination(lastKnownPlayerPosition);
+    }
 }
+
+
 
 public enum States
 {

@@ -29,7 +29,7 @@ public class AiShooting : MonoBehaviour
         itemManager = ItemManagement.Instance;
         idWeapon = Random.Range(1, 5);
         targetPlayer = GameObject.FindGameObjectWithTag("Player");
-        shootRange = enemyAi.radius;
+        shootRange = enemyAi.radius/2;
         Weapon currentWeapon = itemManager.weapons[idWeapon];
         shootCooldown = itemManager.weapons[idWeapon].cooldown;
         weaponSprite.sprite = itemManager.weapons[idWeapon].image;
@@ -62,23 +62,17 @@ public class AiShooting : MonoBehaviour
         lineRenderer.enabled = false;
     }
 
-    private void Update()
-    {
-        if (enemyAi.currentState == States.Attacking && targetPlayer != null)
-        {
-            if (!isAiming)
-            {
-                Vector3 direction = (targetPlayer.transform.position - transform.position).normalized;
-                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                Quaternion lookRotation = Quaternion.Euler(0f, 0f, angle);
-                transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * enemyAi.rotationSpeed);
-            }
-            AimAndShoot();
-        }
-    }
 
-    private void AimAndShoot()
+    public void AimAndShoot()
     {
+        if (!isAiming)
+        {
+            Vector3 direction = (targetPlayer.transform.position - transform.position).normalized;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            Quaternion lookRotation = Quaternion.Euler(0f, 0f, angle);
+            transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * enemyAi.rotationSpeed);
+        }
+
         float distanceToPlayer = Vector3.Distance(transform.position, targetPlayer.transform.position);
         if (distanceToPlayer <= shootRange && canShoot)
         {

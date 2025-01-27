@@ -172,8 +172,27 @@ public class Npc : Health
               
 
     }
-    
-   
+    protected void OnDrawGizmos() //used for testing, draws the line of sight 
+    {
+        Gizmos.color = Color.yellow;
+        UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, radius);
+        UnityEditor.Handles.DrawWireDisc(transform.transform.position, Vector3.forward, innerRadius);
+
+        Vector3 angle01 = DirectionFromAngle(-transform.eulerAngles.z + 90, -angle / 2);
+        Vector3 angle02 = DirectionFromAngle(-transform.eulerAngles.z + 90, angle / 2);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.position + angle01 * radius);
+        Gizmos.DrawLine(transform.position, transform.position + angle02 * radius);
+
+        if (CanSeePlayer)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(transform.position, playerRef.transform.position);
+        }
+    }
+
+
     protected Vector2 DirectionFromAngle(float eulerY, float angleInDegrees) //converts a direction into a 2d Vector
     {
         angleInDegrees += eulerY;

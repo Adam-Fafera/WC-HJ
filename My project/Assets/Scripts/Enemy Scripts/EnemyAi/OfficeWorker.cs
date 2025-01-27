@@ -115,17 +115,20 @@ public class OfficeWorker : Npc
         }
     }
 
-    private Vector3 GetRandomSearchDirection(int extraAngle)
+    private Vector3 GetRandomSearchDirection(int extraAngle) //Creates a random point in a direction that the player was last seen
     {
-        // Randomize direction based on last known player position relative to NPC
-        Vector3 directionToPlayer = lastKnownPlayerPosition + transform.position;
+        //Calculates a vector based on the Player Position relative to the enemy
+        Vector3 directionToPlayer = lastKnownPlayerPosition - transform.position;
         directionToPlayer.z = 0f; // 2D space
 
-        // Randomize angle so NPC doesn't go in one direction
+        //randomize the angle so the enenmy is not going in one direction
         float angleVariation = Random.Range(-100f + 20f * extraAngle, 100f + 20f * extraAngle);
         Quaternion rotation = Quaternion.Euler(0f, 0f, angleVariation);
 
-        return (rotation * directionToPlayer).normalized;
+
+        Vector3 randomDirection = rotation * directionToPlayer;
+
+        return randomDirection.normalized;
     }
 
     private void FleeFromPlayer() //simple code that makes the character go in the opposite direction of the player 

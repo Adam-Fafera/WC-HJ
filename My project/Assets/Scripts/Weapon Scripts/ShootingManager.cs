@@ -197,6 +197,10 @@ public class ShootingManager : MonoBehaviour
                 case 4:
                     {
                         if (isAiming == true) StartCoroutine(RayBurst(3, 0.1f));
+                        if (audioSource != null && weaponSounds[currentWeaponIndex] != null)
+                        {
+                            audioSource.PlayOneShot(weaponSounds[currentWeaponIndex]);
+                        }
                         break;
 
                     }

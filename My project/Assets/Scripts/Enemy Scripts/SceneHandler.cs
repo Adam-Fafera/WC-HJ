@@ -14,6 +14,7 @@ public class SceneHandler : MonoBehaviour
     [SerializeField] TMP_Text enemiesLeftText;
     [SerializeField] GameObject gameOverScreen;
     //[SerializeField] GameObject endScreen;
+    [SerializeField] int LevelChange;
 
     float timer;
     //[SerializeField] TMP_Text completionTime;
@@ -85,7 +86,7 @@ public class SceneHandler : MonoBehaviour
             {
                 new WaitForSeconds(4); // no idea why this doesnt work
 
-                SceneManager.LoadScene(2);
+                SceneManager.LoadScene(LevelChange);
             }
         }
     }

@@ -5785,6 +5785,7 @@ MonoBehaviour:
   alpha: 0
   enemiesLeftText: {fileID: 1801376788}
   gameOverScreen: {fileID: 438649657}
+  LevelChange: 0
 --- !u!61 &292768863
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5961,7 +5962,7 @@ MonoBehaviour:
   m_BuildHeightMesh: 0
   m_MinRegionArea: 0
   m_HideEditorLogs: 0
-  m_NavMeshData: {fileID: 23800000, guid: daa2bbe79721e7141bb3ec79c1cde780, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 2d3c6f6752a23364ea5bec9e51a89337, type: 2}
 --- !u!4 &293773719
 Transform:
   m_ObjectHideFlags: 0
@@ -6876,6 +6877,8 @@ MonoBehaviour:
   - {fileID: 841864081895352499, guid: 6c9f64ef58f414c45b30d88e62b91ef8, type: 3}
   leftLine: {fileID: 1014686321}
   rightLine: {fileID: 730638950}
+  BulletTrail: {fileID: 0}
+  Sparks: {fileID: 0}
 --- !u!114 &591723730
 MonoBehaviour:
   m_ObjectHideFlags: 0

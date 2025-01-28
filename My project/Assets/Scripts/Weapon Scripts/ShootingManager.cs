@@ -204,7 +204,7 @@ public class ShootingManager : MonoBehaviour
 
             if (audioSource != null && weaponSounds[currentWeaponIndex] != null)
             {
-                audioSource.PlayOneShot(weaponSounds[currentWeaponIndex]); // Odtwarzaj d�wi�k odpowiadaj�cy indeksowi broni
+                audioSource.PlayOneShot(weaponSounds[currentWeaponIndex]); 
             }
 
 

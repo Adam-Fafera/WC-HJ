@@ -12,6 +12,7 @@ public class SceneHandler : MonoBehaviour
     public int enemyCount;
     public byte alpha;
     [SerializeField] TMP_Text enemiesLeftText;
+    [SerializeField] GameObject gameOverScreen;
     //[SerializeField] GameObject endScreen;
 
     float timer;
@@ -97,4 +98,9 @@ public class SceneHandler : MonoBehaviour
         }
     }
 
+    public void DisplayGameOverScreen()
+    {
+        Time.timeScale = 0f;
+        gameOverScreen.SetActive(true);
+    }
 }

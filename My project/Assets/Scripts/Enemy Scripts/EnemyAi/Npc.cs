@@ -14,6 +14,7 @@ public class Npc : Health
 
     [SerializeField]
     public GameObject playerRef;//player ref, used to referance the Player Character
+    [SerializeField] GameObject corpse;
     public bool inShootRange {  get; private set; }
     public bool CanSeePlayer { get; private set; } //bool used to check line of sight with the player 
     public float radius = 10; //radius of the line of sight
@@ -81,7 +82,11 @@ public class Npc : Health
         {
             Debug.Log("me me dead");
             SceneHandler.Instance.DisplayEnemiesLeft();
-            Destroy(this.transform.parent.gameObject);
+            corpse.transform.position = this.transform.position;
+            corpse.transform.rotation = Quaternion.Euler(0f, 0f, this.transform.eulerAngles.z+90f);
+            corpse.SetActive(true);
+            Destroy(this.transform.gameObject);
+
         }
     }
     protected void HandleRotation()

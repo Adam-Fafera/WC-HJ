@@ -35,7 +35,8 @@ public class AiShooting : MonoBehaviour
         Weapon currentWeapon = itemManager.weapons[idWeapon];
         shootCooldown = itemManager.weapons[idWeapon].cooldown;
         weaponSprite.sprite = itemManager.weapons[idWeapon].image;
-
+        lineRenderer.startColor = new Color(1f, 1f, 1f, 0.5f);
+        lineRenderer.endColor = new Color(1f, 1f, 1f, 0.5f);
         lineRenderer.startWidth = 0.1f;
         switch (idWeapon)
         {
@@ -87,7 +88,7 @@ public class AiShooting : MonoBehaviour
         canShoot = false;
         isAiming = true;
 
-        Vector3 direction = (targetPlayer.transform.position - shootPoint.position).normalized;
+        Vector3 direction = transform.right; // transform.right wskazuje "w prawo" w przestrzeni lokalnej obiektu
 
         lineRenderer.enabled = true;
 
@@ -100,18 +101,20 @@ public class AiShooting : MonoBehaviour
         {
             elapsedTime += Time.deltaTime;
             float t = elapsedTime / aimTime;
-            Color currentColor = Color.Lerp(Color.gray, Color.black, t);
+            Color currentColor = Color.Lerp(new Color(1f, 1f, 1f, 0.5f), new Color(0.5f, 0.5f, 0.5f, 0.5f), t);
             lineRenderer.startColor = currentColor;
             lineRenderer.endColor = currentColor;
             yield return null;
         }
 
-        RaycastHit2D hit = Physics2D.Raycast(shootPoint.position, (lineEndPoint - shootPoint.position).normalized, shootRange, playerLayer);
+        RaycastHit2D hit = Physics2D.Raycast(shootPoint.position, direction, shootRange, playerLayer);
+
         bulletTrail.Play();
         sparks.Play();
+
         if (hit.collider != null && hit.collider.CompareTag("Player"))
         {
-            Debug.Log("Tu wkleic jakies game over window");
+            SceneHandler.Instance.DisplayGameOverScreen();
         }
 
         lineRenderer.enabled = false;
@@ -120,4 +123,5 @@ public class AiShooting : MonoBehaviour
         yield return new WaitForSeconds(shootCooldown);
         canShoot = true;
     }
+
 }

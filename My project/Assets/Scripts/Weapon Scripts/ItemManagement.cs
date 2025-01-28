@@ -17,7 +17,7 @@ public class ItemManagement : MonoBehaviour
     public static ItemManagement Instance;
     private void LoadValues()
     {
-        SetCurrentWeapon(1);
+        SetCurrentWeapon(0);
         ammoText.text = "Ammo: " + currentWeapon.ammo + "/" + currentWeapon.ammoReserve;
     }
     private void Awake()

@@ -35,6 +35,8 @@ public class ShootingManager : MonoBehaviour
 
     [SerializeField] private LineRenderer leftLine;
     [SerializeField] private LineRenderer rightLine;
+    public ParticleSystem BulletTrail;
+    public ParticleSystem Sparks;
 
     public void Start()
     {
@@ -159,23 +161,44 @@ public class ShootingManager : MonoBehaviour
                     }
                 case 1:
                     {
-                        if (isAiming == true) RaySingle();
+                        if (isAiming == true) {
+                            if (audioSource != null && weaponSounds[currentWeaponIndex] != null)
+                            {
+                                audioSource.PlayOneShot(weaponSounds[currentWeaponIndex]);
+                            }
+                           RaySingle();
+                                }
                         break;
                     }
                 case 2:
                     {
-                        if (isAiming == true) RaySingle();
+                        if (isAiming == true)
+                        {
+                            if (audioSource != null && weaponSounds[currentWeaponIndex] != null)
+                            {
+                                audioSource.PlayOneShot(weaponSounds[currentWeaponIndex]);
+                            }
+                            RaySingle();
+                        }
                         break;
                     }
                 case 3:
                     {
-                        if (isAiming == true) RayTriple();
+                        if (isAiming == true)
+                        {
+                            if (audioSource != null && weaponSounds[currentWeaponIndex] != null)
+                            {
+                                audioSource.PlayOneShot(weaponSounds[currentWeaponIndex]);
+                            }
+                            RaySingle();
+                        }
                         break;
                     }
                 case 4:
                     {
                         if (isAiming == true) StartCoroutine(RayBurst(3, 0.1f));
                         break;
+
                     }
                 case 5:
                     {
@@ -202,10 +225,7 @@ public class ShootingManager : MonoBehaviour
                     }
             }
 
-            if (audioSource != null && weaponSounds[currentWeaponIndex] != null)
-            {
-                audioSource.PlayOneShot(weaponSounds[currentWeaponIndex]); 
-            }
+           
 
 
         }
@@ -243,6 +263,8 @@ public class ShootingManager : MonoBehaviour
 
         ItemManagement.Instance.UpdateAmmo(-1);
         currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? 20 : 0;
+        BulletTrail.Play();
+        Sparks.Play();
     }
 
     void RayTriple()
@@ -275,7 +297,8 @@ public class ShootingManager : MonoBehaviour
         {
             rightHit.collider.GetComponent<Health>()?.TakeDamage(damage);
         }
-
+        BulletTrail.Play();
+        Sparks.Play();
         ItemManagement.Instance.UpdateAmmo(-3);
         currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? 40 : 0;
     }
@@ -296,7 +319,8 @@ public class ShootingManager : MonoBehaviour
                 {
                     hit.collider.GetComponent<Health>()?.TakeDamage(damage);
                 }
-
+                BulletTrail.Play();
+                Sparks.Play();
                 ItemManagement.Instance.UpdateAmmo(-1);
                 currentSpreadAngle += (currentSpreadAngle < maxSpreadAngle) ? 10 : 0;
 

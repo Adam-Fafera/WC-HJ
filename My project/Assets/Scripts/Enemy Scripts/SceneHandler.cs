@@ -79,12 +79,14 @@ public class SceneHandler : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player") 
+        if (collision.tag == "Player")
         {
+            if (enemyCount == 0)
+            {
+                new WaitForSeconds(4); // no idea why this doesnt work
 
-            new WaitForSeconds(4); // no idea why this doesnt work
-
-            SceneManager.LoadScene(2);
+                SceneManager.LoadScene(2);
+            }
         }
     }
 

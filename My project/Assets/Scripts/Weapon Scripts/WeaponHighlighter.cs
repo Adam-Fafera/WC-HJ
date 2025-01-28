@@ -63,6 +63,7 @@ public class InteractionPointer : MonoBehaviour
                     if (int.TryParse(highlightedItem.tag, out weaponId))
                     {
                         ItemManagement.Instance.SetCurrentWeapon(weaponId);
+                        Destroy(highlightedItem.gameObject);
                     }
 
                 }

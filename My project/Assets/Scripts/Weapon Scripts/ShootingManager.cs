@@ -15,6 +15,7 @@ public class ShootingManager : MonoBehaviour
     float cooldown;
     private float lastShotTime = 0f; // czas ostatniego bulleta
     private bool isAiming = false;
+    private bool isFirstShot=true;
     private Movement movement;
 
 
@@ -139,6 +140,11 @@ public class ShootingManager : MonoBehaviour
     }
     private void OnFire(InputValue value)
     {
+        if (isFirstShot)
+        {
+            SceneHandler.Instance.SetPanicModeForAll(PanicMode.Panic);
+            isFirstShot = false;
+        }
         cooldown = ItemManagement.Instance.currentWeapon.cooldown; // dostosowywanie cd do broni
         if (Time.time >= lastShotTime + cooldown && ItemManagement.Instance.currentWeapon.ammo > 0)
         {

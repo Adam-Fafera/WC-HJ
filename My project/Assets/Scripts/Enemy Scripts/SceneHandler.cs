@@ -43,7 +43,7 @@ public class SceneHandler : MonoBehaviour
             //enemiesLeftText.gameObject.SetActive(false);
             //endScreen.SetActive(true);
             alpha = 255;
-            enemiesLeftText.text ="Head to elevator ;)";
+            enemiesLeftText.text ="Head to the elevator ;)";
             InvokeRepeating("TextFade", 0f, 0.1f);
         }
         else if (enemyCount == 1)
@@ -85,7 +85,16 @@ public class SceneHandler : MonoBehaviour
 
             SceneManager.LoadScene(2);
         }
+    }
 
+    public void SetPanicModeForAll(PanicMode newState)
+    {
+        Npc[] allNpcs = FindObjectsOfType<Npc>();
+
+        foreach (Npc npc in allNpcs)
+        {
+            npc.panicModeState = newState;
+        }
     }
 
 }
